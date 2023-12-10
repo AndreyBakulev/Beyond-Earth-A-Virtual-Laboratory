@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 
-public class FinalProject extends PApplet {
+public class Topography extends PApplet {
+
+
 
 
 
@@ -100,7 +102,6 @@ float altScalar = .1f;
   CLIMATE:
     https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
 */
-
 class Sphere {
     float x, y, z, r;
     int w, h;
@@ -217,7 +218,7 @@ class Sphere {
   public void settings() { size(1280, 720, P3D); }
 
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "FinalProject" };
+    String[] appletArgs = new String[] { "Topography" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {
