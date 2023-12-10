@@ -21,7 +21,6 @@ public class Topography extends PApplet {
 
 
 
-
 PeasyCam cam;
 PVector[][] globe;
 PImage topography;
