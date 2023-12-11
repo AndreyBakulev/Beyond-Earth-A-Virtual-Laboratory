@@ -1,5 +1,4 @@
 import peasy.*;
-import interfascia.*;
 PeasyCam cam;
 PVector[][] globe;
 PImage topography;
