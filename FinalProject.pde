@@ -14,7 +14,7 @@ void setup() {
     topography.resize(640,360);
     topography.loadPixels();
     sphere = new Sphere(0,0,0,topography.width, topography.height,100,globe);
-    sphere.generateSphere();
+    sphere.generateSphere("standard");
 }
 void draw() {
     background(0);
@@ -34,12 +34,12 @@ void draw() {
             if (keyCode == UP) {
                 altScalar +=.01; 
                 //this is inneficient but idc
-                sphere.generateSphere();
+                sphere.generateSphere("standard");
             }
             if (keyCode == DOWN) {
                 altScalar -=.01;
                 //this is inneficient but idc
-                sphere.generateSphere();
+                sphere.generateSphere("standard");
             }
         }
         
