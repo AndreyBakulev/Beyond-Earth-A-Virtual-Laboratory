@@ -11,7 +11,7 @@ void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
-    topography.resize(640,360);
+    topography.resize(320,180);
     topography.loadPixels();
     sphere = new Sphere(0,0,0,topography.width, topography.height,100,globe);
     sphere.generateSphere("standard");
@@ -24,12 +24,13 @@ void draw() {
     sphere.drawSphere();
     if (keyPressed) {
         if (key == CODED) {
-            //sphere.scaleWater();
             if (keyCode == RIGHT) {
                 waterLevel++; 
+                sphere.scaleWaterUp();
             }
             if (keyCode == LEFT) {
                 waterLevel--; 
+                sphere.scaleWaterDown();
             }
             if (keyCode == UP) {
                 altScalar +=.01; 

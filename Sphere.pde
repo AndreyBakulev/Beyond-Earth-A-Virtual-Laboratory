@@ -41,11 +41,7 @@ class Sphere {
                     globe[i][j].mult((r + (altitude * altScalar)) / r);
                 }
             }
-        }
-        if(sphereType.equals("normalized cube")){
-            
-        }
-        
+        }        
     }
     void drawSphere() {
         for (int i = 0; i < h; i++) {
@@ -86,16 +82,25 @@ class Sphere {
         }
         
     }
-    void scaleWater() {
-        //this is def not correct or efficient
-        //multiplying itself and not getting reset thats why its bigger than the ground 'above' it
+    void scaleWaterUp() {
         for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
+            for (int j = 0; j < w; j++){
                 if (greyScale[i][j] <= waterLevel) {
-                    globe[i][j].mult((r + (waterLevel * .00)) / r);
+                    globe[i][j].normalize().mult((r + ((waterLevel-groundLevel) * altScalar)));
                 }
             }
+        }
     }
+       void scaleWaterDown() {
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++){
+                if (waterLevel <= greyScale[i][j]) {
+                    globe[i][j].normalize().mult((r + ((greyScale[i][j]-groundLevel) * altScalar)));
+                } else {
+                    globe[i][j].normalize().mult((r + ((waterLevel-groundLevel) * altScalar)));
+                }
+            }
+        }
     }
     
     int binConvert(int binary) {

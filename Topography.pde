@@ -9,10 +9,8 @@ the double for loops in drawSphere() that check if waterlevel is higher is O(n^2
 if i make a 1d array and check it like that (similar to photo.pixels[]), will that be O(n)?
 
 ADDITIONS:
+maybe add "initialGlobe" array to GenerateSphere so we can call it on waterLevelDown
 make the ground colored (map it from greyval seems ez)
-try using a fibonacci sphere (ask farrar)
-make water 3d (simply multiply the vector by the waterLevel (this is weird cus it keeps multiplying it and then it stacks and isnt even))
-make the water hold its color as it goes (rainbow like)
 adding compass
 calculating total amt of water on the planet at a certain water level(gallons)
 
