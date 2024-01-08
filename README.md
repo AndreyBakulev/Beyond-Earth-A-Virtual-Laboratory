@@ -40,7 +40,6 @@
     <br />
     <br />
     <a href="https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory">View Demo</a>
-    ·
   </p>
 </div>
 
@@ -76,8 +75,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+Beyond Earth lets the user upload a topographical map of any planet as well as extra information (such as atmospheric pressure, planetary core material, and gravity strength). Using Numerical Weather Prediction (NWP) and Intelligent Environmental Manipulation (IEM), it interprets the data and produces a 3D render of the interactive planet. It then allows the user to change information such as atmospheric pressure, atmosphere elemental makeup, greenhouse gas concentration, planetary water level, and much more to calculate and generate biomes in real time. It uses research-backed calculations and professional-grade tools to make the most accurate predictions possible. To make this goal a reality, I have spent countless hours in biology labs learning about planetary ecology and super greenhouse gases while simultaneously diving deep into atmospheric physics with expert professors. Combining astrophysics, biology, physics, math, and computer science into a single project, I aim to publish this project to institutions and individuals across the globe, whether it be as a simple sandbox game or hardware to predict our future home.
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
