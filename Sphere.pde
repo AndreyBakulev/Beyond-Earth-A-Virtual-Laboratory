@@ -77,10 +77,8 @@ class Sphere {
             } else {
                 vertex(0,1 * r,0);
             }
-            
             endShape();
         }
-        
     }
     void scaleWaterUp() {
         for (int i = 0; i < h; i++) {
@@ -91,7 +89,7 @@ class Sphere {
             }
         }
     }
-       void scaleWaterDown() {
+    void scaleWaterDown() {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++){
                 if (waterLevel <= greyScale[i][j]) {
@@ -102,7 +100,13 @@ class Sphere {
             }
         }
     }
-    
+    void colorSphere(int c){
+        for(int i = 0; i < greyScale.length;i++){
+            for(int j = 0; j < greyScale[i].length;j++){
+               // greyScale[i][j] = 
+            }
+        }
+    }
     int binConvert(int binary) {
         int decimal = 0;
         int n = 0;
@@ -118,5 +122,4 @@ class Sphere {
         }
         return decimal;
     }
-    
 }

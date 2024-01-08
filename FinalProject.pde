@@ -43,8 +43,8 @@ void draw() {
                 sphere.generateSphere("standard");
             }
         }
-        
-}
+    }   
+    sphere.colorSphere(5);
     
     textSize(50);
     fill(0,408,612);
@@ -54,9 +54,4 @@ void draw() {
     String planetName = photo.substring(0,photo.indexOf("Topography"));
     //lol all of this long code just to capitalize
     text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1), - 125, - 200);
-    
 }
-
-
-
-
