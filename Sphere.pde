@@ -113,60 +113,45 @@ class Sphere {
                 //is it better to do nested for loops here?
                 if(temp < 0){
                     if(rain<100){
-                        //tundra
-                       greyScale[i][j] = new Color(148,169,174);
+                       greyScale[i][j] = Color.Tundra();
                     }
                 }
                 if(0 < temp && temp < 7){
                     if(rain < 20){
-                        //grassland
-                        greyScale[i][j] = new Color(147,127,44);
+                        greyScale[i][j] = Color.Grassland();
                     }
                     if(20 < rain && rain < 30){
-                        //woodland
-                        greyScale[i][j] = new Color(180,125,1);
+                        greyScale[i][j] = Color.Woodland();
                     }
                     if(30 < rain){
-                        //boreal forest
-                        greyScale[i][j] = new Color(91,144,81);
+                        greyScale[i][j] = Color.Boreal_Forest();
                     }
                 }
                 if(7<temp && temp <21){
                     if(rain < 25){
-                        //grassland
-                        greyScale[i][j] = new Color(147,127,44);
+                        greyScale[i][j] = Color.Grassland();
                     }
                     if(25<rain && rain <100){
-                        //woodland
-                         greyScale[i][j] = new Color(180,125,1);
+                         greyScale[i][j] = Color.Woodland();
                     }
                     if(100<rain && rain<200){
-                        //seasonal forest
-                        greyScale[i][j] = new Color(40,138,161);
+                        greyScale[i][j] = Color.Seasonal_Forest();
                     }
                     if(200<rain){
-                        //temperate forest
-                        greyScale[i][j] = new Color(3,83,109);
+                        greyScale[i][j] = Color.Temperate_Forest();
                     }
                 }
                 if(21<temp){
                     if(rain<60){
-                        //subtropical desert
-                        greyScale[i][j] = new Color(201,114,52);
+                        greyScale[i][j] = Color.Subtropical_Desert();
                     }
                     if(60<rain && rain<250){
-                        //savanna
-                        greyScale[i][j] = new Color(152,167,34);
+                        greyScale[i][j] = Color.Savanna();
                     }
                     if(250<rain){
-                        //tropical rainforest
-                        greyScale[i][j] = new Color(1,82,44);
+                        greyScale[i][j] = Color.Tropical_Rainforest();
                     }
                 }
-                //maps the temp to max and min colors
-                // greyScale[i][j].r = (int) (map(tempMap[i][j],-10,35,0,255));
-                // greyScale[i][j].g = (int) (map(tempMap[i][j],-10,35,0,255));
-                // greyScale[i][j].b = (int) (map(tempMap[i][j],-10,35,0,255));
             }
         }
     }

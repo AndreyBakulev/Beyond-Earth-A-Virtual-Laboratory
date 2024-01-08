@@ -1,40 +1,34 @@
-public class Color {
+public static class Color {
     private double r,g,b;
    
     //just making colors to make life easier
-    // public static Color Red(){
-    //     return new Color(229.5, 25.5,38.25);
-    // }
-    // public Color Green(){
-    //     return new Color(127.5, 178.5, 15.6);
-    // }
-    // public Color Blue(){
-    //     return new Color(127.5, 127.5, 153);
-    // }
-    // public Color Yellow(){
-    //     return new Color(229.5, 204, 25.5);
-    // }
-    // public Color Magenta(){
-    //     return new Color(229.5, 51, 229.5);
-    // }
-    // public Color Cyan(){
-    //     return new Color(25.5,204, 216.75);
-    // }
-    // public Color White(){
-    //     return new Color(255,255, 255);
-    // }
-    // public Color Black(){
-    //     return new Color(0, 0, 0);
-    // }
-    // public Color Dark(){
-    //     return new Color(25.5,25.5,25.5);
-    // }
-    // public Color MarineBlue(){
-    //     return new Color(0, 67.9,128.7);
-    // }
-    // public Color Jade(){
-    //     return new Color(0, 193.8,122.91);
-    // }
+    public static Color Tundra(){
+        return new Color(148,169,174);
+    }
+    public static Color Grassland(){
+        return new Color(147,127,44);
+    }
+    public static Color Woodland(){
+        return new Color(180,125,1);
+    }
+    public static Color Boreal_Forest(){
+        return new Color(91,144,81);
+    }
+    public static Color Seasonal_Forest(){
+        return new Color(40,138,161);
+    }
+    public static Color Temperate_Forest(){
+        return new Color(3,83,109);
+    }
+    public static Color Subtropical_Desert(){
+        return new Color(201,114,52);
+    }
+    public static Color Savanna(){
+        return new Color(152,167,34);
+    }
+    public static Color Tropical_Rainforest(){
+        return new Color(1,82,44);
+    }
     public Color(double r, double g, double b){
         this.r = r;
         this.g = g;

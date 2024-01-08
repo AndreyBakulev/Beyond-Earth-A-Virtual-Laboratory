@@ -38,43 +38,37 @@ adding something to auto detect range of colors from low to high (so i dont have
 CLIMATE:
 https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
 */
-public class Color {
+public static class Color {
     private double r,g,b;
    
     //just making colors to make life easier
-    // public static Color Red(){
-    //     return new Color(229.5, 25.5,38.25);
-    // }
-    // public Color Green(){
-    //     return new Color(127.5, 178.5, 15.6);
-    // }
-    // public Color Blue(){
-    //     return new Color(127.5, 127.5, 153);
-    // }
-    // public Color Yellow(){
-    //     return new Color(229.5, 204, 25.5);
-    // }
-    // public Color Magenta(){
-    //     return new Color(229.5, 51, 229.5);
-    // }
-    // public Color Cyan(){
-    //     return new Color(25.5,204, 216.75);
-    // }
-    // public Color White(){
-    //     return new Color(255,255, 255);
-    // }
-    // public Color Black(){
-    //     return new Color(0, 0, 0);
-    // }
-    // public Color Dark(){
-    //     return new Color(25.5,25.5,25.5);
-    // }
-    // public Color MarineBlue(){
-    //     return new Color(0, 67.9,128.7);
-    // }
-    // public Color Jade(){
-    //     return new Color(0, 193.8,122.91);
-    // }
+    public static Color Tundra(){
+        return new Color(148,169,174);
+    }
+    public static Color Grassland(){
+        return new Color(147,127,44);
+    }
+    public static Color Woodland(){
+        return new Color(180,125,1);
+    }
+    public static Color Boreal_Forest(){
+        return new Color(91,144,81);
+    }
+    public static Color Seasonal_Forest(){
+        return new Color(40,138,161);
+    }
+    public static Color Temperate_Forest(){
+        return new Color(3,83,109);
+    }
+    public static Color Subtropical_Desert(){
+        return new Color(201,114,52);
+    }
+    public static Color Savanna(){
+        return new Color(152,167,34);
+    }
+    public static Color Tropical_Rainforest(){
+        return new Color(1,82,44);
+    }
     public Color(double r, double g, double b){
         this.r = r;
         this.g = g;
@@ -293,60 +287,45 @@ class Sphere {
                 //is it better to do nested for loops here?
                 if(temp < 0){
                     if(rain<100){
-                        //tundra
-                       greyScale[i][j] = new Color(148,169,174);
+                       greyScale[i][j] = Color.Tundra();
                     }
                 }
                 if(0 < temp && temp < 7){
                     if(rain < 20){
-                        //grassland
-                        greyScale[i][j] = new Color(147,127,44);
+                        greyScale[i][j] = Color.Grassland();
                     }
                     if(20 < rain && rain < 30){
-                        //woodland
-                        greyScale[i][j] = new Color(180,125,1);
+                        greyScale[i][j] = Color.Woodland();
                     }
                     if(30 < rain){
-                        //boreal forest
-                        greyScale[i][j] = new Color(91,144,81);
+                        greyScale[i][j] = Color.Boreal_Forest();
                     }
                 }
                 if(7<temp && temp <21){
                     if(rain < 25){
-                        //grassland
-                        greyScale[i][j] = new Color(147,127,44);
+                        greyScale[i][j] = Color.Grassland();
                     }
                     if(25<rain && rain <100){
-                        //woodland
-                         greyScale[i][j] = new Color(180,125,1);
+                         greyScale[i][j] = Color.Woodland();
                     }
                     if(100<rain && rain<200){
-                        //seasonal forest
-                        greyScale[i][j] = new Color(40,138,161);
+                        greyScale[i][j] = Color.Seasonal_Forest();
                     }
                     if(200<rain){
-                        //temperate forest
-                        greyScale[i][j] = new Color(3,83,109);
+                        greyScale[i][j] = Color.Temperate_Forest();
                     }
                 }
                 if(21<temp){
                     if(rain<60){
-                        //subtropical desert
-                        greyScale[i][j] = new Color(201,114,52);
+                        greyScale[i][j] = Color.Subtropical_Desert();
                     }
                     if(60<rain && rain<250){
-                        //savanna
-                        greyScale[i][j] = new Color(152,167,34);
+                        greyScale[i][j] = Color.Savanna();
                     }
                     if(250<rain){
-                        //tropical rainforest
-                        greyScale[i][j] = new Color(1,82,44);
+                        greyScale[i][j] = Color.Tropical_Rainforest();
                     }
                 }
-                //maps the temp to max and min colors
-                // greyScale[i][j].r = (int) (map(tempMap[i][j],-10,35,0,255));
-                // greyScale[i][j].g = (int) (map(tempMap[i][j],-10,35,0,255));
-                // greyScale[i][j].b = (int) (map(tempMap[i][j],-10,35,0,255));
             }
         }
     }
