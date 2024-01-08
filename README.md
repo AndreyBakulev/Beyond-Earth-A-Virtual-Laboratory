@@ -28,7 +28,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory">
-    <img src="Downloads/logo.png" alt="Logo" width="80" height="80">
+    <img src="Images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Beyond Earth: A Virtual Laboratory</h3>
