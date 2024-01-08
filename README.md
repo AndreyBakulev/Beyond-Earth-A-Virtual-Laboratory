@@ -27,7 +27,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory">
-    <img src="Images/logo.png" alt="Logo" width="80" height="80">
+    <imgsrc="Images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Beyond Earth: A Virtual Laboratory</h3>
@@ -184,5 +184,4 @@ Project Link: [https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laborator
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
 [Processing-url]: https://processing.org/
-[Processing.js]: 
 
