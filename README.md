@@ -97,10 +97,8 @@ To use, launch the application and go into  settings to configure the keybinds (
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Adding a homescreen and settings
+- [ ] Adding different cube rendering methods (for optimization)
 
 See the [open issues](https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/issues) for a full list of proposed features (and known issues).
 
@@ -138,7 +136,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - andreybakulev24@gmail.com
+Andrey Bakulev - andreybakulev24@gmail.com
 
 Project Link: [https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory](https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory)
 
@@ -149,9 +147,6 @@ Project Link: [https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laborator
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
