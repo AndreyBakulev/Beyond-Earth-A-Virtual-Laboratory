@@ -1,6 +1,6 @@
 import peasy.*;
 PeasyCam cam;
-PVector[][] globe;
+Vector3D[][] globe;
 PImage topography;
 int w,h;
 String photo = "marsTopography.jpeg";
@@ -15,6 +15,8 @@ void setup() {
     topography.loadPixels();
     sphere = new Sphere(0,0,0,topography.width, topography.height,100,globe);
     sphere.generateSphere("standard");
+    sphere.calculateBiomes();
+    
 }
 void draw() {
     background(0);
@@ -44,7 +46,6 @@ void draw() {
             }
         }
     }   
-    sphere.colorSphere(5);
     
     textSize(50);
     fill(0,408,612);

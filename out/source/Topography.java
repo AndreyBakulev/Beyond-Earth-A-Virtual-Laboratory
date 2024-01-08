@@ -19,13 +19,12 @@ public class Topography extends PApplet {
 
 /* 
 PROBLEMS:
-keep optimizing
-scaleWater is not correct
 
+FIGURE OUT HOW TO DO STATIC CLASSES SO U CAN MAKE BIOMES WORK
 POSSIBLE OPTIMIZATION:
 make a list of all pixels and remove the ones that are already below water level (same time complexity?)
 the double for loops in drawSphere() that check if waterlevel is higher is O(n^2) i think...
-if i make a 1d array and check it like that (similar to photo.pixels[]), will that be O(n)?
+for biomes, figure out how to make the if statements check linear graphs, not just a single number (bc the biomes arent perfectly rectangular)
 
 ADDITIONS:
 maybe add "initialGlobe" array to GenerateSphere so we can call it on waterLevelDown
@@ -39,26 +38,91 @@ adding something to auto detect range of colors from low to high (so i dont have
 CLIMATE:
 https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
 */
-class Color{
-    int r,g,b;
-    Color(int r, int g, int b){
+public class Color {
+    private double r,g,b;
+   
+    //just making colors to make life easier
+    // public static Color Red(){
+    //     return new Color(229.5, 25.5,38.25);
+    // }
+    // public Color Green(){
+    //     return new Color(127.5, 178.5, 15.6);
+    // }
+    // public Color Blue(){
+    //     return new Color(127.5, 127.5, 153);
+    // }
+    // public Color Yellow(){
+    //     return new Color(229.5, 204, 25.5);
+    // }
+    // public Color Magenta(){
+    //     return new Color(229.5, 51, 229.5);
+    // }
+    // public Color Cyan(){
+    //     return new Color(25.5,204, 216.75);
+    // }
+    // public Color White(){
+    //     return new Color(255,255, 255);
+    // }
+    // public Color Black(){
+    //     return new Color(0, 0, 0);
+    // }
+    // public Color Dark(){
+    //     return new Color(25.5,25.5,25.5);
+    // }
+    // public Color MarineBlue(){
+    //     return new Color(0, 67.9,128.7);
+    // }
+    // public Color Jade(){
+    //     return new Color(0, 193.8,122.91);
+    // }
+    public Color(double r, double g, double b){
         this.r = r;
-        this.b = b;
         this.g = g;
+        this.b = b;
     }
-    public int getR(){
+    //returning the r,g,b of the color
+    public double getR(){
         return r;
     }
-    public int getG(){
+    public double getG(){
         return g;
     }
-    public int getB(){
+    public double getB(){
         return b;
     }
+    //adding two color's r g b values
+    public Color add(Color C){
+        return new Color(this.r + C.getR(), this.g + C.getG(), this.b+C.getB());
+    }
+    //multiply the r g b values of this color by a scalar
+    public Color scale(double scalar){
+        return new Color(this.r*scalar,this.g*scalar,this.b*scalar);
+    }
+    //whatever this does
+    public int toARGB(){
+        int ir = (int)(Math.min(Math.max(r,0),1) * 255 + 0.1f);
+        int ig = (int)(Math.min(Math.max(g,0),1) * 255 + 0.1f);
+        int ib = (int)(Math.min(Math.max(b,0),1) * 255 + 0.1f);
+        return (ir << 16) | (ig << 8) | (ib << 0);
+        //bit shifting 
+    }
+    //multiplies the color by the shading color c
+    public Color shade(Color c){
+        return new Color(this.getR()*c.getR(), this.getG()*c.getG(), this.getB()*c.getB());
+    }
+    //tints the color by the tinting color c
+    public Color tint(Color c){
+        double newR = r + (1 - r)*c.getR();
+        double newG = g + (1 - g)*c.getG();
+        double newB = b + (1 - b)*c.getB();
+        return new Color(newR, newG, newB);
+
+    }
+
 }
 
 PeasyCam cam;
-PVector[][] globe;
+Vector3D[][] globe;
 PImage topography;
 int w,h;
 String photo = "marsTopography.jpeg";
@@ -73,6 +137,8 @@ public void setup() {
     topography.loadPixels();
     sphere = new Sphere(0,0,0,topography.width, topography.height,100,globe);
     sphere.generateSphere("standard");
+    sphere.calculateBiomes();
+    
 }
 public void draw() {
     background(0);
@@ -102,7 +168,6 @@ public void draw() {
             }
         }
     }   
-    sphere.colorSphere(5);
     
     textSize(50);
     fill(0,408,612);
@@ -116,12 +181,13 @@ public void draw() {
 class Sphere {
     float x, y, z, r;
     int w, h;
-    PVector[][] globe;
-    int[][] greyScale;
+    Vector3D[][] globe;
+    Color[][] greyScale;
     int groundLevel = 30;
-    int altitude;
-    
-    Sphere(float x, float y, float z, int w, int h, float r, PVector[][] globe) {
+    double altitude;
+    float[][] tempMap;
+    float[][] rainMap;
+    Sphere(float x, float y, float z, int w, int h, float r, Vector3D[][] globe) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -133,8 +199,10 @@ class Sphere {
     public void generateSphere(String sphereType) {
         //drawing simple sphere
         if(sphereType.equals("standard")){
-            greyScale = new int[h][w];
-            globe = new PVector[h][w];
+            greyScale = new Color[h][w];
+            globe = new Vector3D[h][w];
+            tempMap = new float[h][w];
+            rainMap = new float[h][w];
             for (int i = 0; i < h; i++) {
                 // mapping the latitude as i percent of the way to total (i/total) and putting
                 // it into pi (if i is 25 then it would b 25 percent(25/100) of pi (.25/pi)
@@ -148,12 +216,14 @@ class Sphere {
                     float y = -r * cos(lat);
                     float z = r * sin(lat) * cos(lon);
                     // storing the coords into array of vectors
-                    globe[i][j] = new PVector(x, y, z);
+                    globe[i][j] = new Vector3D(x, y, z);
                     int greyVal = Integer.parseInt(binary(topography.pixels[(i * w) + j] % 256, 8));
                     //saves it into an array ONCE
-                    greyScale[i][j] = this.binConvert(greyVal);
-                    altitude = greyScale[i][j] - groundLevel;
-                    globe[i][j].mult((r + (altitude * altScalar)) / r);
+                    greyScale[i][j] = new Color(this.binConvert(greyVal),this.binConvert(greyVal),this.binConvert(greyVal));
+                    altitude =  greyScale[i][j].getR() - groundLevel;
+                    globe[i][j] = globe[i][j].scale((r + (altitude * altScalar)) / r);
+                    tempMap[i][j] = random(-10,35);
+                    rainMap[i][j] = random(0,450);
                 }
             }
         }        
@@ -163,34 +233,33 @@ class Sphere {
             // quad prob easier but tri could b as well
             beginShape(QUAD_STRIP);
             for (int j = 0; j < w; j++) {
-                if (greyScale[i][j] <= waterLevel) {
+                if (greyScale[i][j].getR() <= waterLevel) {
                     fill(waterLevel, waterLevel / 2, waterLevel * 2);
                 } else {
-                    fill(greyScale[i][j], greyScale[i][j], greyScale[i][j]);
+                    fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
                 // this is altitude stuff
-                
-                PVector v1 = globe[i][j];
+                Vector3D v1 = globe[i][j];
                 // top left point
-                vertex(v1.x, v1.y, v1.z);
+                vertex((float)v1.x,(float) v1.y,(float) v1.z);
                 //this is checking for south pole (i=h) to 0
                 if (i != h - 1) {
-                    PVector v2 = globe[i + 1][j];
-                    vertex(v2.x, v2.y, v2.z);
+                    Vector3D v2 = globe[i + 1][j];
+                    vertex((float)v2.x,(float) v2.y, (float)v2.z);
                 } else {
-                    vertex(0,1 * r,0);
+                    vertex((float)0,(float)1 * r,(float)0);
                 }
                 // bottom left point
                 
             }
             //this is checking for last strip from (i=h) to 0
-            PVector v3 = globe[i][0];
-            vertex(v3.x,v3.y,v3.z);
+            Vector3D v3 = globe[i][0];
+            vertex((float)v3.x,(float)v3.y,(float)v3.z);
             if (i != h - 1) {
-                PVector v4 = globe[i + 1][0];
-                vertex(v4.x,v4.y,v4.z);
+                Vector3D v4 = globe[i + 1][0];
+                vertex((float)v4.x,(float)v4.y,(float)v4.z);
             } else {
-                vertex(0,1 * r,0);
+                vertex((float)0,(float)1 * r,(float)0);
             }
             endShape();
         }
@@ -198,8 +267,8 @@ class Sphere {
     public void scaleWaterUp() {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++){
-                if (greyScale[i][j] <= waterLevel) {
-                    globe[i][j].normalize().mult((r + ((waterLevel-groundLevel) * altScalar)));
+                if (greyScale[i][j].getR() <= waterLevel) {
+                    globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
                 }
             }
         }
@@ -207,18 +276,67 @@ class Sphere {
     public void scaleWaterDown() {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++){
-                if (waterLevel <= greyScale[i][j]) {
-                    globe[i][j].normalize().mult((r + ((greyScale[i][j]-groundLevel) * altScalar)));
+                if (waterLevel <= greyScale[i][j].getR()) {
+                    globe[i][j].normalize().scale((r + ((greyScale[i][j].getR()-groundLevel) * altScalar)));
                 } else {
-                    globe[i][j].normalize().mult((r + ((waterLevel-groundLevel) * altScalar)));
+                    globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
                 }
             }
         }
     }
-    public void colorSphere(int c){
+    public void calculateBiomes(){
         for(int i = 0; i < greyScale.length;i++){
             for(int j = 0; j < greyScale[i].length;j++){
-               // greyScale[i][j] = 
+                float temp = tempMap[i][j];
+                float rain = rainMap[i][j];
+                //bunch of if statements checking what biome it is based off x(temp) and y(rainfall)
+                //is it better to do nested for loops here?
+                if(temp < 0){
+                    if(rain<100){
+                        //tundra
+                       greyScale[i][j] = new Color(255,255,255);
+                    }
+                }
+                if(0 < temp && temp < 7){
+                    if(rain < 20){
+                        //grassland
+                    }
+                    if(20 < rain && rain < 30){
+                        //woodland
+                    }
+                    if(30 < rain){
+                        //boreal forest
+                    }
+                }
+                if(7<temp && temp <21){
+                    if(rain < 25){
+                        //grassland
+                    }
+                    if(25<rain && rain <100){
+                        //woodland
+                    }
+                    if(100<rain && rain<200){
+                        //seasonal forest
+                    }
+                    if(200<rain){
+                        //temperate forest
+                    }
+                }
+                if(21<temp){
+                    if(rain<60){
+                        //subtropical desert
+                    }
+                    if(60<rain && rain<250){
+                        //savanna
+                    }
+                    if(250<rain){
+                        //tropical rainforest
+                    }
+                }
+                //maps the temp to max and min colors
+                // greyScale[i][j].r = (int) (map(tempMap[i][j],-10,35,0,255));
+                // greyScale[i][j].g = (int) (map(tempMap[i][j],-10,35,0,255));
+                // greyScale[i][j].b = (int) (map(tempMap[i][j],-10,35,0,255));
             }
         }
     }
@@ -237,6 +355,105 @@ class Sphere {
         }
         return decimal;
     }
+}
+class Vector2D{
+  public double x;
+  public double y;
+
+  public Vector2D(double x, double y){
+    this.x = x;
+    this.y = y;
+    
+  }
+  public double getX(){
+    return x;
+  }
+  public double getY(){
+    return y;
+  }
+  public void applyForce(Vector2D force){
+    x = x + force.getX();
+    y = y + force.getY();
+  }
+  public Vector2D scale(double scalar){
+    return new Vector2D(x*scalar,y*scalar);
+  }
+  public Vector2D add(Vector2D v){
+    return new Vector2D(x+v.getX(),y+v.getY());
+  }
+  public Vector2D subtract(Vector2D v){
+    return new Vector2D(x-v.getX(),y-v.getY());
+  }
+  public double dot(Vector2D v){
+    return (x*v.getX() + y*v.getY());
+  }
+  public double length(){
+    return Math.sqrt(this.dot(this));
+  }
+  public Vector2D normalize(){
+    return this.scale(1/this.length());
+  }
+   public String toString(){
+    return "(" + x + ", " + y + ")";
+  }
+}
+class Vector3D{
+  public double x;
+  public double y;
+  public double z;
+  public Vector3D(double x, double y, double z){
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+  public double getx(){
+    return x;
+  }
+  public double gety(){
+    return y;
+  }
+  public double getz(){
+    return z;
+  }
+  public void applyForce(Vector3D force){
+    x = x + force.getx();
+    y = y + force.gety();
+    z = z + force.getz();
+  }
+  public Vector3D scale(double scalar){
+    return new Vector3D(x*scalar,y*scalar,z*scalar);
+  }
+  public Vector3D divide(double scalar){
+    return new Vector3D(x/scalar,y/scalar,z/scalar);
+  }
+  public Vector3D add(Vector3D v){
+    return new Vector3D(x+v.getx(),y+v.gety(),z+v.getz());
+  }
+  public Vector3D subtract(Vector3D v){
+    return new Vector3D(x-v.getx(),y-v.gety(),z-v.getz());
+  }
+  public double dot(Vector3D v){
+    return (x*v.getx() + y*v.gety() + z*v.getz());
+  }
+  public double length(){
+    return Math.sqrt(this.dot(this));
+  }
+  public Vector3D normalize(){
+    return this.scale(1/this.length());
+  }
+  public Vector3D cross(Vector3D v){
+    return new Vector3D((this.y*v.z) - (this.z*v.y),(this.z*v.x)- (this.x*v.z), (this.x*v.y)-(this.y*v.x));
+  }
+
+  public String toString(){
+    return "(" + x + ", " + y + ", " + z + ")";
+  }
+  public  Vector3D Up(){ return new Vector3D(0,1,0);}
+  public  Vector3D Down(){ return new Vector3D(0,-1,0);}
+  public  Vector3D Left(){ return new Vector3D(-1,0,0);}
+  public  Vector3D Right(){ return new Vector3D(1,0,0);}
+  public  Vector3D Forward(){ return new Vector3D(0,0,-1);}
+  public  Vector3D Backward(){ return new Vector3D(0,0,1);}
 }
 
 

@@ -1,12 +1,11 @@
 /* 
 PROBLEMS:
-keep optimizing
-scaleWater is not correct
 
+FIGURE OUT HOW TO DO STATIC CLASSES SO U CAN MAKE BIOMES WORK
 POSSIBLE OPTIMIZATION:
 make a list of all pixels and remove the ones that are already below water level (same time complexity?)
 the double for loops in drawSphere() that check if waterlevel is higher is O(n^2) i think...
-if i make a 1d array and check it like that (similar to photo.pixels[]), will that be O(n)?
+for biomes, figure out how to make the if statements check linear graphs, not just a single number (bc the biomes arent perfectly rectangular)
 
 ADDITIONS:
 maybe add "initialGlobe" array to GenerateSphere so we can call it on waterLevelDown
