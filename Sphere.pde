@@ -114,43 +114,53 @@ class Sphere {
                 if(temp < 0){
                     if(rain<100){
                         //tundra
-                       greyScale[i][j] = new Color(255,255,255);
+                       greyScale[i][j] = new Color(148,169,174);
                     }
                 }
                 if(0 < temp && temp < 7){
                     if(rain < 20){
                         //grassland
+                        greyScale[i][j] = new Color(147,127,44);
                     }
                     if(20 < rain && rain < 30){
                         //woodland
+                        greyScale[i][j] = new Color(180,125,1);
                     }
                     if(30 < rain){
                         //boreal forest
+                        greyScale[i][j] = new Color(91,144,81);
                     }
                 }
                 if(7<temp && temp <21){
                     if(rain < 25){
                         //grassland
+                        greyScale[i][j] = new Color(147,127,44);
                     }
                     if(25<rain && rain <100){
                         //woodland
+                         greyScale[i][j] = new Color(180,125,1);
                     }
                     if(100<rain && rain<200){
                         //seasonal forest
+                        greyScale[i][j] = new Color(40,138,161);
                     }
                     if(200<rain){
                         //temperate forest
+                        greyScale[i][j] = new Color(3,83,109);
                     }
                 }
                 if(21<temp){
                     if(rain<60){
                         //subtropical desert
+                        greyScale[i][j] = new Color(201,114,52);
                     }
                     if(60<rain && rain<250){
                         //savanna
+                        greyScale[i][j] = new Color(152,167,34);
                     }
                     if(250<rain){
                         //tropical rainforest
+                        greyScale[i][j] = new Color(1,82,44);
                     }
                 }
                 //maps the temp to max and min colors
