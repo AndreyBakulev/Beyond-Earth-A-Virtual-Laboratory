@@ -80,16 +80,6 @@ Beyond Earth lets the user upload a topographical map of any planet as well as e
 
 
 
-### Built With
-
-* [![Java][Java.js]][Java-url]
-* [![React][React.js]][React-url]
-* [![Processing][Processing.js][Processing-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -230,5 +220,5 @@ Project Link: [https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laborator
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
 [Processing-url]: https://processing.org/
-[Processing.js]
-[Processing
+[Processing.js]: 
+
