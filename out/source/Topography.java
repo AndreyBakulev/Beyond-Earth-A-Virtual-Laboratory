@@ -228,7 +228,7 @@ class Sphere {
             beginShape(QUAD_STRIP);
             for (int j = 0; j < w; j++) {
                 if (greyScale[i][j].getR() <= waterLevel) {
-                    fill(waterLevel, waterLevel / 2, waterLevel * 2);
+                    fill(0, 0, 255);
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
@@ -262,7 +262,7 @@ class Sphere {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++){
                 if (greyScale[i][j].getR() <= waterLevel) {
-                    globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
+                    globe[i][j] =globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
                 }
             }
         }
@@ -271,9 +271,9 @@ class Sphere {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++){
                 if (waterLevel <= greyScale[i][j].getR()) {
-                    globe[i][j].normalize().scale((r + ((greyScale[i][j].getR()-groundLevel) * altScalar)));
+                   globe[i][j] = globe[i][j].normalize().scale((r + ((greyScale[i][j].getR()-groundLevel) * altScalar)));
                 } else {
-                    globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
+                    globe[i][j] = globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
                 }
             }
         }
