@@ -14,7 +14,7 @@ void setup() {
     topography.resize(320,180);
     topography.loadPixels();
     sphere = new Sphere(0,0,0,topography.width, topography.height,100,globe);
-    sphere.generateSphere("standard");
+    sphere.startSphere("standard");
     sphere.calculateBiomes();
     
 }
@@ -37,12 +37,12 @@ void draw() {
             if (keyCode == UP) {
                 altScalar +=.01; 
                 //this is inneficient but idc
-                sphere.generateSphere("standard");
+                sphere.regenSphere("standard");
             }
             if (keyCode == DOWN) {
                 altScalar -=.01;
                 //this is inneficient but idc
-                sphere.generateSphere("standard");
+                sphere.regenSphere("standard");
             }
         }
     }   

@@ -1,8 +1,19 @@
 /* 
-PROBLEMS:
 
-FIGURE OUT HOW TO DO STATIC CLASSES SO U CAN MAKE BIOMES WORK
+
+NEXT STEPS:
+
+    calculate the rain and temp stuff in generateSphere in sphere class
+
+
+
+
+
+
 POSSIBLE OPTIMIZATION:
+maybe import the graph and add triangles to match it, then send out ray to check if it hits
+
+
 make a list of all pixels and remove the ones that are already below water level (same time complexity?)
 the double for loops in drawSphere() that check if waterlevel is higher is O(n^2) i think...
 for biomes, figure out how to make the if statements check linear graphs, not just a single number (bc the biomes arent perfectly rectangular)
