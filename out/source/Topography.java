@@ -226,7 +226,7 @@ class Sphere {
                     int greyVal = Integer.parseInt(binary(topography.pixels[(i * w) + j] % 256, 8));
                     //saves it into an array ONCE
                     greyScale[i][j] = new Color(this.binConvert(greyVal),this.binConvert(greyVal),this.binConvert(greyVal));
-                    altitude[i][j] =  greyScale[i][j].getR() - groundLevel;
+                    altitude[i][j] =  greyScale[i][j].getR();
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
                     tempMap[i][j] = random(-10,35);
                     rainMap[i][j] = random(0,450);
@@ -381,6 +381,11 @@ class Sphere {
         return decimal;
     }
 }
+/* NOTES:
+altitude is now an array which holds the values of each pixels altitude (called once and is unchanged)
+
+
+*/
 class Vector2D{
   public double x;
   public double y;
