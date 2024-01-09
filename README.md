@@ -20,7 +20,6 @@
 -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 
 
 
@@ -28,7 +27,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory">
-    <img src="Downloads/logo.png" alt="Logo" width="80" height="80">
+    <imgsrc="Images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Beyond Earth: A Virtual Laboratory</h3>
@@ -36,14 +35,10 @@
   <p align="center">
     The purpose of this Project is to accurately predict biomes on exoplanets using Numerical Weather Prediction Models and Intelligent Environment Mapping
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory">View Demo</a>
   </p>
 </div>
 
@@ -56,7 +51,6 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
@@ -79,25 +73,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+Beyond Earth lets the user upload a topographical map of any planet as well as extra information (such as atmospheric pressure, planetary core material, and gravity strength). Using Numerical Weather Prediction (NWP) and Intelligent Environmental Manipulation (IEM), it interprets the data and produces a 3D render of the interactive planet. It then allows the user to change information such as atmospheric pressure, atmosphere elemental makeup, greenhouse gas concentration, planetary water level, and much more to calculate and generate biomes in real time. It uses research-backed calculations and professional-grade tools to make the most accurate predictions possible. To make this goal a reality, I have spent countless hours in biology labs learning about planetary ecology and super greenhouse gases while simultaneously diving deep into atmospheric physics with expert professors. Combining astrophysics, biology, physics, math, and computer science into a single project, I aim to publish this project to institutions and individuals across the globe, whether it be as a simple sandbox game or hardware to predict our future home.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -106,43 +82,13 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+To start, simply download and run the files in either processing or VScode (processing plugin needed)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+To use, launch the application and go into  settings to configure the keybinds (arrow keys are default)
 
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -151,12 +97,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Adding a homescreen and settings
+- [ ] Adding different cube rendering methods (for optimization)
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -192,9 +136,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Andrey Bakulev - andreybakulev24@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory](https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -203,9 +147,6 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -213,16 +154,16 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory.svg?style=for-the-badge
+[contributors-url]: https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory.svg?style=for-the-badge
+[forks-url]: https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/network/members
+[stars-shield]: https://img.shields.io/github/stars/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory.svg?style=for-the-badge
+[stars-url]: https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/stargazers
+[issues-shield]: https://img.shields.io/github/issues/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory.svg?style=for-the-badge
+[issues-url]: https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/issues
+[license-shield]: https://img.shields.io/github/license/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory.svg?style=for-the-badge
+[license-url]: https://github.com/AndreyBakulev/Beyond-Earth-A-Virtual-Laboratory/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
@@ -242,3 +183,5 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+[Processing-url]: https://processing.org/
+
