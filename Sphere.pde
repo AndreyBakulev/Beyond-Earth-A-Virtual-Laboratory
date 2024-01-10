@@ -3,7 +3,6 @@ class Sphere {
     int w, h;
     Vector3D[][] globe;
     Color[][] greyScale;
-    int groundLevel = 30;
     double[][] altitude;
     float[][] tempMap;
     float[][] rainMap;
@@ -54,7 +53,7 @@ class Sphere {
             beginShape(QUAD_STRIP);
             for (int j = 0; j < w; j++) {
                 if (altitude[i][j] <= waterLevel) {
-                    globe[i][j] =globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
+                    globe[i][j] =globe[i][j].normalize().scale((r + ((waterLevel) * altScalar)));
                     fill(0, 0, 255);
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
@@ -107,7 +106,6 @@ class Sphere {
                     rainMap[i][j] = random(0,450);
                 }
             }
-            println(altitude[10][10]);
         }        
     }
     void scaleWaterDown() {
@@ -116,7 +114,7 @@ class Sphere {
                 if (waterLevel <= altitude[i][j]) {
                    globe[i][j] = globe[i][j].normalize().scale((r + ((altitude[i][j]) * altScalar)));
                 } else {
-                    globe[i][j] = globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
+                    globe[i][j] = globe[i][j].normalize().scale((r + ((waterLevel) * altScalar)));
                 }
             }
         }
