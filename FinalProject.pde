@@ -6,14 +6,14 @@ int w,h;
 String photo = "marsTopography.jpeg";
 Sphere sphere;
 int waterLevel = 0;
-float altScalar =.1;
+float altScalar =.04;
 void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
     topography.resize(320,180);
     topography.loadPixels();
-    sphere = new Sphere(0,0,0,topography.width, topography.height,100,globe);
+    sphere = new Sphere(topography.width, topography.height,100,globe);
     sphere.startSphere("standard");
     sphere.calculateBiomes();
     
@@ -28,7 +28,6 @@ void draw() {
         if (key == CODED) {
             if (keyCode == RIGHT) {
                 waterLevel++; 
-                sphere.scaleWaterUp();
             }
             if (keyCode == LEFT) {
                 waterLevel--; 

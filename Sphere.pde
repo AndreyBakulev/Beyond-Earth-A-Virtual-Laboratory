@@ -7,23 +7,22 @@ class Sphere {
     double[][] altitude;
     float[][] tempMap;
     float[][] rainMap;
-    Sphere(float x, float y, float z, int w, int h, float r, Vector3D[][] globe) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    Sphere(int w, int h, float r, Vector3D[][] globe) {
         this.w = w;
         this.h = h;
         this.r = r;
         this.globe = globe;
     }
     void startSphere(String sphereType) {
-        //drawing simple sphere
         if(sphereType.equals("standard")){
             greyScale = new Color[h][w];
             globe = new Vector3D[h][w];
             tempMap = new float[h][w];
             rainMap = new float[h][w];
             altitude = new double[h][w];
+            x = 0;
+            y = 0;
+            z = 0;
             for (int i = 0; i < h; i++) {
                 // mapping the latitude as i percent of the way to total (i/total) and putting
                 // it into pi (if i is 25 then it would b 25 percent(25/100) of pi (.25/pi)
@@ -33,9 +32,9 @@ class Sphere {
                     // it into 2pi (j is 25 then it would b 25 percent of pi (.25/2pi)
                     float lon = map(j, 0, w, 0, 2 * PI);
                     // literally just polar coords
-                    float x = r * sin(lat) * sin(lon);
-                    float y = -r * cos(lat);
-                    float z = r * sin(lat) * cos(lon);
+                    x = r * sin(lat) * sin(lon);
+                    y = -r * cos(lat);
+                    z = r * sin(lat) * cos(lon);
                     // storing the coords into array of vectors
                     globe[i][j] = new Vector3D(x, y, z);
                     int greyVal = Integer.parseInt(binary(topography.pixels[(i * w) + j] % 256, 8));
@@ -48,6 +47,42 @@ class Sphere {
                 }
             }
         }        
+    }
+    void drawSphere() {
+        for (int i = 0; i < h; i++) {
+            // quad prob easier but tri could b as well
+            beginShape(QUAD_STRIP);
+            for (int j = 0; j < w; j++) {
+                if (altitude[i][j] <= waterLevel) {
+                    globe[i][j] =globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
+                    fill(0, 0, 255);
+                } else {
+                    fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
+                }
+                // this is altitude stuff
+                Vector3D v1 = globe[i][j];
+                // top left point
+                vertex((float)v1.x,(float) v1.y,(float) v1.z);
+                //this is checking for south pole (i=h) to 0
+                if (i != h - 1) {
+                    Vector3D v2 = globe[i + 1][j];
+                    vertex((float)v2.x,(float) v2.y, (float)v2.z);
+                } else {
+                    vertex((float)0,(float)1 * r,(float)0);
+                }
+                
+            }
+            //this is checking for last strip from (i=h) to 0
+            Vector3D v3 = globe[i][0];
+            vertex((float)v3.x,(float)v3.y,(float)v3.z);
+            if (i != h - 1) {
+                Vector3D v4 = globe[i + 1][0];
+                vertex((float)v4.x,(float)v4.y,(float)v4.z);
+            } else {
+                vertex((float)0,(float)1 * r,(float)0);
+            }
+            endShape();
+        }
     }
     void regenSphere(String sphereType) {
         //drawing simple sphere
@@ -67,62 +102,19 @@ class Sphere {
                     // storing the coords into array of vectors
                     globe[i][j] = new Vector3D(x, y, z);
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
+                    //altitude[i][j] = altitude[i][j] *((r + (altitude[i][j] * altScalar)) / r);
                     tempMap[i][j] = random(-10,35);
                     rainMap[i][j] = random(0,450);
                 }
             }
+            println(altitude[10][10]);
         }        
-    }
-    void drawSphere() {
-        for (int i = 0; i < h; i++) {
-            // quad prob easier but tri could b as well
-            beginShape(QUAD_STRIP);
-            for (int j = 0; j < w; j++) {
-                if (altitude[i][j] <= waterLevel) {
-                    fill(0, 0, 255);
-                } else {
-                    fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
-                }
-                // this is altitude stuff
-                Vector3D v1 = globe[i][j];
-                // top left point
-                vertex((float)v1.x,(float) v1.y,(float) v1.z);
-                //this is checking for south pole (i=h) to 0
-                if (i != h - 1) {
-                    Vector3D v2 = globe[i + 1][j];
-                    vertex((float)v2.x,(float) v2.y, (float)v2.z);
-                } else {
-                    vertex((float)0,(float)1 * r,(float)0);
-                }
-                // bottom left point
-                
-            }
-            //this is checking for last strip from (i=h) to 0
-            Vector3D v3 = globe[i][0];
-            vertex((float)v3.x,(float)v3.y,(float)v3.z);
-            if (i != h - 1) {
-                Vector3D v4 = globe[i + 1][0];
-                vertex((float)v4.x,(float)v4.y,(float)v4.z);
-            } else {
-                vertex((float)0,(float)1 * r,(float)0);
-            }
-            endShape();
-        }
-    }
-    void scaleWaterUp() {
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++){
-                if (altitude[i][j] <= waterLevel) {
-                    globe[i][j] =globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
-                }
-            }
-        }
     }
     void scaleWaterDown() {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++){
                 if (waterLevel <= altitude[i][j]) {
-                   globe[i][j] = globe[i][j].normalize().scale((r + ((altitude[i][j]-groundLevel) * altScalar)));
+                   globe[i][j] = globe[i][j].normalize().scale((r + ((altitude[i][j]) * altScalar)));
                 } else {
                     globe[i][j] = globe[i][j].normalize().scale((r + ((waterLevel-groundLevel) * altScalar)));
                 }
