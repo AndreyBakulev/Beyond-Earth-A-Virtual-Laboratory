@@ -1,22 +1,15 @@
 /* 
 
 PROBLEMS:
-altitude is being ruined when i do regenSphere (i think bc alt is never getting changed)
+WOOHOOOO THE GLOBE IS FULLY WORKING
 NEXT STEPS:
-
+    make a gui
     calculate the rain and temp stuff in generateSphere in sphere class
-
-
-
-
-
+    how the hell do i map the temps of mars? (no way im doing it manually). Maybe the same way im gonna do biomes? (with triangle mapping?)
 
 POSSIBLE OPTIMIZATION:
 maybe import the graph and add triangles to match it, then send out ray to check if it hits
 
-
-the double for loops in drawSphere() that check if waterlevel is higher is O(n^2) i think...
-for biomes, figure out how to make the if statements check linear graphs, not just a single number (bc the biomes arent perfectly rectangular)
 
 ADDITIONS:
 calculating total amt of water on the planet at a certain water level(gallons)
