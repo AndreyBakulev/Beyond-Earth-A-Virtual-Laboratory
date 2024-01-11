@@ -11,7 +11,7 @@ void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
-    topography.resize(320,180);
+    topography.resize(32,18);
     topography.loadPixels();
     sphere = new Sphere(topography.width, topography.height,100,globe);
     sphere.startSphere("standard");
@@ -38,7 +38,7 @@ void draw() {
                 //this is inneficient but idc
                 sphere.regenSphere("standard");
             }
-            if (keyCode == DOWN) {
+            if (keyCode == DOWN && altScalar > 0.01) {
                 altScalar -=.01;
                 //this is inneficient but idc
                 sphere.regenSphere("standard");

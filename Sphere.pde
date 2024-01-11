@@ -48,38 +48,56 @@ class Sphere {
         }        
     }
     void drawSphere() {
-        for (int i = 0; i < h; i++) {
-            // quad prob easier but tri could b as well
-            beginShape(QUAD_STRIP);
+        for(int i = 0; i < h; i++){
             for (int j = 0; j < w; j++) {
                 if (altitude[i][j] <= waterLevel) {
                     globe[i][j] =globe[i][j].normalize().scale((r + ((waterLevel) * altScalar)));
+                }
+            }
+        }
+        for (int i = 0; i < h; i++) {
+            beginShape(QUAD);
+            for (int j = 0; j < w; j++) {
+                // this is altitude stuff
+                if (altitude[i][j] <= waterLevel) {
                     fill(0, 0, 255);
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
-                // this is altitude stuff
-                Vector3D v1 = globe[i][j];
-                // top left point
-                vertex((float)v1.x,(float) v1.y,(float) v1.z);
-                //this is checking for south pole (i=h) to 0
-                if (i != h - 1) {
-                    Vector3D v2 = globe[i + 1][j];
+                if(i != h - 1 && j != w-1){ 
+                    Vector3D v1 = globe[i][j];
+                    Vector3D v2 = globe[i][j+1];
+                    Vector3D v3 = globe[i+1][j]; 
+                    Vector3D v4 = globe[i+1][j+1];
+                    vertex((float)v1.x,(float) v1.y,(float) v1.z);
                     vertex((float)v2.x,(float) v2.y, (float)v2.z);
-                } else {
-                    vertex((float)0,(float)1 * r,(float)0);
+                    vertex((float)v4.x,(float) v4.y, (float)v4.z);
+                    vertex((float)v3.x,(float) v3.y, (float)v3.z);
                 }
-                
+                if(i == h-1 && j != w-1){
+                    Vector3D v5 = globe[i][j];
+                    Vector3D v6 = globe[i][j+1];
+                    vertex((float)v5.x,(float) v5.y,(float) v5.z);
+                    vertex((float)v6.x,(float) v6.y,(float) v6.z);
+                    vertex((float)0,(float)(1 * ((r + (altitude[i][0] * altScalar)))),(float)0);
+                    vertex((float)0,(float)(1 * ((r + (altitude[i][0] * altScalar)))),(float)0);
+                }
             }
             //this is checking for last strip from (i=h) to 0
-            Vector3D v3 = globe[i][0];
-            vertex((float)v3.x,(float)v3.y,(float)v3.z);
+            Vector3D v7 = globe[i][w-1];
+            Vector3D v8 = globe[i][0];
+            vertex((float)v7.x,(float)v7.y,(float)v7.z);
+            vertex((float)v8.x,(float)v8.y,(float)v8.z);
             if (i != h - 1) {
-                Vector3D v4 = globe[i + 1][0];
-                vertex((float)v4.x,(float)v4.y,(float)v4.z);
+                Vector3D v9 = globe[i + 1][w-1];
+                Vector3D v10 = globe[i + 1][0];
+                vertex((float)v10.x,(float)v10.y,(float)v10.z);
+                vertex((float)v9.x,(float)v9.y,(float)v9.z);
             } else {
-                vertex((float)0,(float)1 * r,(float)0);
+                vertex((float)0,(float)(1 * ((r + (altitude[i][0] * altScalar)))),(float)0);
+                vertex((float)0,(float)(1 * ((r + (altitude[i][0] * altScalar)))),(float)0);
             }
+            
             endShape();
         }
     }
@@ -188,6 +206,4 @@ class Sphere {
 }
 /* NOTES:
 altitude is now an array which holds the values of each pixels altitude (called once and is unchanged)
-
-
 */
