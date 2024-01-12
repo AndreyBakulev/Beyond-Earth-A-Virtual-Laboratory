@@ -13,7 +13,7 @@ class Sphere {
         this.globe = globe;
     }
     void startSphere(String sphereType) {
-        if(sphereType.equals("standard")){
+        if(sphereType.toLowerCase().equals("standard")){
             greyScale = new Color[h][w];
             globe = new Vector3D[h][w];
             tempMap = new float[h][w];

@@ -116,15 +116,33 @@ public static class Color {
     }
 
 }
+class Controller{
+public static final int DETAIL = 15;
+public static final int RADIUS = 100;
+public static final int SPHERE_MODE = 0;
+public static final int ICO_RECURSIVE = 0;
+public static final int WATER_LEVEL = 0;
+public static final float ALTITUDE_SCALAR = 0.04f;
+public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
+}
 
 PeasyCam cam;
 Vector3D[][] globe;
 PImage topography;
 int w,h;
-String photo = "marsTopography.jpeg";
 Sphere sphere;
-int waterLevel = 0;
-float altScalar =.04f;
+String photo = Controller.GREYSCALE_IMAGE;
+int waterLevel = Controller.WATER_LEVEL;
+float altScalar = Controller.ALTITUDE_SCALAR;
+int detail = Controller.DETAIL;
+int radius = Controller.RADIUS;
+int sphereMode = Controller.SPHERE_MODE;
+int icoRecursive = Controller.ICO_RECURSIVE;
+NormalizedCube[] cubeFaces = new NormalizedCube[6];
+SpherifiedCube[] sCubeFaces = new SpherifiedCube[6];
+Icosahedron ico = new Icosahedron(icoRecursive,radius);
+Vector3D[] direction = {new Vector3D(0,-1,0), new Vector3D(0,1,0),new Vector3D(1,0,0),new Vector3D(-1,0,0),new Vector3D(0,0,1),new Vector3D(0,0,-1)};
+String currentShape = "standard";
 public void setup() {
     /* size commented out by preprocessor */;
     cam = new PeasyCam(this,500);
@@ -132,8 +150,15 @@ public void setup() {
     topography.resize(16,9);
     topography.loadPixels();
     sphere = new Sphere(topography.width, topography.height,100,globe);
-    sphere.startSphere("standard");
+    sphere.startSphere(currentShape);
     sphere.calculateBiomes();
+    ico.createMesh();
+    for(int i = 0; i < 6; i++){
+        sCubeFaces[i] = new SpherifiedCube(detail,direction[i],radius);
+        sCubeFaces[i].constructCube();
+        cubeFaces[i] = new NormalizedCube(detail,direction[i],radius);
+        cubeFaces[i].constructCube();
+    }
     
 }
 public void draw() {
@@ -141,7 +166,28 @@ public void draw() {
     fill(255);
     lights();
     noStroke();
-    sphere.drawSphere();
+    switch(sphereMode){
+        case 0: 
+            sphere.drawSphere();
+            currentShape = "standard";
+        break;
+        case 1:
+        for(int i = 0; i < 6; i++){
+            cubeFaces[i].drawCube();
+        }
+        currentShape = "Normalized Cube";
+        break;
+        case 2:
+        for(int i = 0; i < 6; i++){
+            sCubeFaces[i].drawCube();
+        }
+        currentShape = "Spherified Cube";
+        break;
+        case 3:
+        ico.draw();
+        currentShape = "Icosahedron";
+        break;
+    } 
     if (keyPressed) {
         if (key == CODED) {
             if (keyCode == RIGHT) {
@@ -162,6 +208,18 @@ public void draw() {
                 sphere.regenSphere("standard");
             }
         }
+        if(key == '1'){
+            sphereMode = 0;
+        }
+        if(key == '2'){
+            sphereMode = 1;
+        }
+        if(key == '3'){
+            sphereMode = 2;
+        }
+        if(key == '4'){
+            sphereMode = 3;
+        }
     }   
     
     textSize(50);
@@ -173,6 +231,188 @@ public void draw() {
     //lol all of this long code just to capitalize
     text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1), - 125, - 200);
 }
+class Icosahedron{
+    int resolution;
+    Vector3D localUp;
+    Vector3D axisA;
+    Vector3D axisB;
+    HashMap<Integer,Vector3D> verticesDict;
+    int[] triangleArray;
+    int radius;
+    int recursionAmt;
+    ArrayList<TriangleIndices> faces;
+    ArrayList<TriangleIndices> faces2;
+    double t = (1.0f + Math.sqrt(5.0f))/2.0f;
+    public Icosahedron(int recursionAmt, int radius){
+        this.recursionAmt = recursionAmt;
+        this.radius = radius;
+    }
+    public void createMesh(){
+        //setting 12 verticies
+        verticesDict = new HashMap<Integer,Vector3D>();
+        verticesDict.put(0, new Vector3D(-1,  t,  0));
+        verticesDict.put(1, new Vector3D( 1,  t,  0));
+        verticesDict.put(2, new Vector3D(-1, -t,  0));
+        verticesDict.put(3, new Vector3D( 1, -t,  0));
+
+        verticesDict.put(4, new Vector3D( 0, -1,  t));
+        verticesDict.put(5, new Vector3D( 0,  1,  t));
+        verticesDict.put(6, new Vector3D( 0, -1, -t));
+        verticesDict.put(7, new Vector3D( 0,  1, -t));
+
+        verticesDict.put(8, new Vector3D( t,  0, -1));
+        verticesDict.put(9, new Vector3D( t,  0,  1));
+        verticesDict.put(10,new Vector3D(-t,  0, -1));
+        verticesDict.put(11,new Vector3D(-t,  0,  1));
+
+        //setting the 20 faces
+        faces = new ArrayList<TriangleIndices>();
+        //first 5 surrounding p1
+        faces.add(new TriangleIndices(0, 11, 5));
+        faces.add(new TriangleIndices(0, 5, 1));
+        faces.add(new TriangleIndices(0, 1, 7));
+        faces.add(new TriangleIndices(0, 7, 10));
+        faces.add(new TriangleIndices(0, 10, 11));
+
+        // 5 adjacent faces
+        faces.add(new TriangleIndices(1, 5, 9));
+        faces.add(new TriangleIndices(5, 11, 4));
+        faces.add(new TriangleIndices(11, 10, 2));
+        faces.add(new TriangleIndices(10, 7, 6));
+        faces.add(new TriangleIndices(7, 1, 8));
+
+        // 5 faces around point 3
+        faces.add(new TriangleIndices(3, 9, 4));
+        faces.add(new TriangleIndices(3, 4, 2));
+        faces.add(new TriangleIndices(3, 2, 6));
+        faces.add(new TriangleIndices(3, 6, 8));
+        faces.add(new TriangleIndices(3, 8, 9));
+
+        // 5 adjacent faces
+        faces.add(new TriangleIndices(4, 9, 5));
+        faces.add(new TriangleIndices(2, 4, 11));
+        faces.add(new TriangleIndices(6, 2, 10));
+        faces.add(new TriangleIndices(8, 6, 7));
+        faces.add(new TriangleIndices(9, 8, 1));
+
+        //bisecting triangles
+        for(int i = 0; i < recursionAmt; i++){
+            faces2 = new ArrayList<TriangleIndices>();
+            for(int j = 0; j < faces.size(); j++){
+                //replace the triangles for 4
+                //get the middle points of each triangle (a,b,c)
+                TriangleIndices tri = faces.get(j);
+                int a = faces.size() + (j*3);
+                int b = faces.size() + (j*3) + 1;
+                int c = faces.size() + (j*3) + 2;
+                //3 vectors that get midpoints of the three vectors 
+                Vector3D newA = verticesDict.get((tri.getV1())).add(verticesDict.get(tri.getV2())).divide(2);
+                Vector3D newB = verticesDict.get((tri.getV2())).add(verticesDict.get(tri.getV3())).divide(2);
+                Vector3D newC = verticesDict.get((tri.getV3())).add(verticesDict.get(tri.getV1())).divide(2);
+                faces2.add(new TriangleIndices(tri.getV1(),a,c));
+                faces2.add(new TriangleIndices(tri.getV2(),b,a));
+                faces2.add(new TriangleIndices(tri.getV3(),c,b));
+                faces2.add(new TriangleIndices(a,b,c));
+                verticesDict.put(a,newA);
+                verticesDict.put(b,newB);
+                verticesDict.put(c,newC);
+            }
+            faces = faces2;
+        }
+    }
+    public void draw(){
+        for(int i = 0; i < faces.size(); i++){
+            beginShape(TRIANGLES);
+            //this SHOULD iterate thru each item in faces and therefore get the triangles and then draw them
+
+            Vector3D p1 = verticesDict.get(faces.get(i).getV1()).normalize().scale(radius);
+            Vector3D p2 = verticesDict.get(faces.get(i).getV2()).normalize().scale(radius);
+            Vector3D p3 = verticesDict.get(faces.get(i).getV3()).normalize().scale(radius);
+            vertex((float)p1.x,(float)p1.y,(float)p1.z);
+            vertex((float)p2.x,(float)p2.y,(float)p2.z);
+            vertex((float)p3.x,(float)p3.y,(float)p3.z);
+            
+            endShape();
+        }
+    }
+}
+/* Figure out the math for the amt of triangles every time the triangle is broken into 3 (3,6,15,45)
+
+TRIANGLE STUFF:
+the formula of total vertices is (n^2 +2)/2 where n is the amt of vertices on the bottom (two vertice) side
+how to find amt of triangles on bottom? pattern: 2,3,5,9, (if u subtract initial val 2 it becomes 0,1,3,7 find an equation that follows that)]
+amt of vertices on bottom = 2*recursion -1
+amt of total vertices = ((bottom*bottom) + bottom) /2
+
+for get middle point:
+you need to find the mid point, add it to the faces2 array (being done) AND add it into the vertice array so it knows the vector of it
+
+possible changes:
+make verticesArray into a dict and map the points to a vector
+*/
+class NormalizedCube{
+    int resolution;
+    Vector3D localUp;
+    Vector3D axisA;
+    Vector3D axisB;
+    Vector3D[] verticesArray;
+    int[] triangleArray;
+    int radius;
+    public NormalizedCube(int resolution, Vector3D localUp, int radius){
+        this.resolution = resolution;
+        this.localUp = localUp;
+        axisA = new Vector3D(localUp.y, localUp.z, localUp.x);
+        axisB = localUp.cross(axisA);
+        this.radius = radius;
+    }
+    public void constructCube(){
+        verticesArray = new Vector3D[resolution*resolution];
+        triangleArray = new int[((resolution-1)*(resolution-1))*6];
+        int triIndex = 0;
+        for(double y = 0; y < resolution; y++){
+            for(double x = 0; x < resolution; x++){
+                int i = (int) (x+(y*resolution));
+                Vector2D percentDone = new Vector2D(x/(resolution-1),y/(resolution-1));
+                Vector3D pointOnUnitCube = localUp.add(axisA.scale(((percentDone.x -.5f)*2))).add(axisB.scale(((percentDone.y -.5f)*2)));
+                //println(pointOnUnitCube.x + " " + pointOnUnitCube.y + " " + pointOnUnitCube.z);
+                //println(percentDone);
+                verticesArray[i] = pointOnUnitCube;
+
+                if(x != resolution-1  && y != resolution-1){
+                    triangleArray[triIndex] = i;
+                    triangleArray[triIndex+1] = i+resolution+1;
+                    triangleArray[triIndex+2] = i+resolution;
+                    triangleArray[triIndex+3] = i;
+                    triangleArray[triIndex+4] = i+1;
+                    triangleArray[triIndex+5] = i+resolution+1;
+                    triIndex+= 6;
+                }
+            }
+        }
+    }
+    public void drawCube(){
+        for(int i = 0; i < triangleArray.length; i+=3){
+            beginShape(TRIANGLES);
+            Vector3D p1 = (verticesArray[triangleArray[i]]).normalize().scale(radius);
+            Vector3D p2 = (verticesArray[triangleArray[i+1]]).normalize().scale(radius);
+            Vector3D p3 = (verticesArray[triangleArray[i+2]]).normalize().scale(radius);
+            vertex((float)p1.x,(float)p1.y,(float)p1.z);
+            vertex((float)p2.x,(float)p2.y,(float)p2.z);
+            vertex((float)p3.x,(float)p3.y,(float)p3.z);
+            //println(p1.y);
+            
+            endShape();
+        }
+    }
+}
+
+/*
+p1 x=0 , y= 1, z = -20
+p2 x=0 , y= 1, z = -20
+
+PROBLEMS:
+percentDone rounds to int so thats fs a problem
+*/
 class Sphere {
     float x, y, z, r;
     int w, h;
@@ -188,7 +428,7 @@ class Sphere {
         this.globe = globe;
     }
     public void startSphere(String sphereType) {
-        if(sphereType.equals("standard")){
+        if(sphereType.toLowerCase().equals("standard")){
             greyScale = new Color[h][w];
             globe = new Vector3D[h][w];
             tempMap = new float[h][w];
@@ -382,6 +622,91 @@ class Sphere {
 /* NOTES:
 altitude is now an array which holds the values of each pixels altitude (called once and is unchanged)
 */
+class SpherifiedCube{
+    int resolution;
+    Vector3D localUp;
+    Vector3D axisA;
+    Vector3D axisB;
+    Vector3D[] verticesArray;
+    int[] triangleArray;
+    int radius;
+    public SpherifiedCube(int resolution, Vector3D localUp, int radius){
+        this.resolution = resolution;
+        this.localUp = localUp;
+        axisA = new Vector3D(localUp.y, localUp.z, localUp.x);
+        axisB = localUp.cross(axisA);
+        this.radius = radius;
+    }
+    public void constructCube(){
+        verticesArray = new Vector3D[resolution*resolution];
+        triangleArray = new int[((resolution-1)*(resolution-1))*6];
+        int triIndex = 0;
+        for(double y = 0; y < resolution; y++){
+            for(double x = 0; x < resolution; x++){
+                int i = (int) (x+(y*resolution));
+                Vector2D percentDone = new Vector2D(x/(resolution-1),y/(resolution-1));
+                Vector3D p = localUp.add(axisA.scale(((percentDone.x -.5f)*2))).add(axisB.scale(((percentDone.y -.5f)*2)));
+                double x2 = p.x * p.x;
+                double y2 = p.y * p.y;
+                double z2 = p.z * p.z;
+                Vector3D newPoint = new Vector3D(0,0,0);
+                newPoint.x = p.x * Math.sqrt(1 - y2 / 2 - z2 / 2 + y2 * z2 / 3);
+		        newPoint.y = p.y * Math.sqrt(1 - x2 / 2 - z2 / 2 + x2 * z2 / 3);
+		        newPoint.z = p.z * Math.sqrt(1 - x2 / 2 - y2 / 2 + x2 * y2 / 3);
+                verticesArray[i] = newPoint;
+
+                if(x != resolution-1  && y != resolution-1){
+                    triangleArray[triIndex] = i;
+                    triangleArray[triIndex+1] = i+resolution+1;
+                    triangleArray[triIndex+2] = i+resolution;
+                    triangleArray[triIndex+3] = i;
+                    triangleArray[triIndex+4] = i+1;
+                    triangleArray[triIndex+5] = i+resolution+1;
+                    triIndex+= 6;
+                }
+            }
+        }
+    }
+    public void drawCube(){
+        for(int i = 0; i < triangleArray.length; i+=3){
+            beginShape(TRIANGLES);
+            Vector3D p1 = (verticesArray[triangleArray[i]]).normalize().scale(radius);
+            Vector3D p2 = (verticesArray[triangleArray[i+1]]).normalize().scale(radius);
+            Vector3D p3 = (verticesArray[triangleArray[i+2]]).normalize().scale(radius);
+            vertex((float)p1.x,(float)p1.y,(float)p1.z);
+            vertex((float)p2.x,(float)p2.y,(float)p2.z);
+            vertex((float)p3.x,(float)p3.y,(float)p3.z);
+            //println(p1.y);
+            
+            endShape();
+        }
+    }
+}
+
+/*
+p1 x=0 , y= 1, z = -20
+p2 x=0 , y= 1, z = -20
+
+PROBLEMS:
+percentDone rounds to int so thats fs a problem
+*/
+class TriangleIndices{
+    public int v1,v2,v3;
+    public TriangleIndices(int v1, int v2, int v3){
+        this.v1 = v1;
+        this.v2 = v2;
+        this.v3 = v3;
+    }
+    public int getV1(){
+        return v1;
+    }
+    public int getV2(){
+        return v2;
+    }
+    public int getV3(){
+        return v3;
+    }
+}
 class Vector2D{
   public double x;
   public double y;

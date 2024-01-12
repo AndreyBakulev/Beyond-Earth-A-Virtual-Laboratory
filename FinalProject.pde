@@ -3,10 +3,19 @@ PeasyCam cam;
 Vector3D[][] globe;
 PImage topography;
 int w,h;
-String photo = "marsTopography.jpeg";
 Sphere sphere;
-int waterLevel = 0;
-float altScalar =.04;
+String photo = Controller.GREYSCALE_IMAGE;
+int waterLevel = Controller.WATER_LEVEL;
+float altScalar = Controller.ALTITUDE_SCALAR;
+int detail = Controller.DETAIL;
+int radius = Controller.RADIUS;
+int sphereMode = Controller.SPHERE_MODE;
+int icoRecursive = Controller.ICO_RECURSIVE;
+NormalizedCube[] cubeFaces = new NormalizedCube[6];
+SpherifiedCube[] sCubeFaces = new SpherifiedCube[6];
+Icosahedron ico = new Icosahedron(icoRecursive,radius);
+Vector3D[] direction = {new Vector3D(0,-1,0), new Vector3D(0,1,0),new Vector3D(1,0,0),new Vector3D(-1,0,0),new Vector3D(0,0,1),new Vector3D(0,0,-1)};
+String currentShape = "standard";
 void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
@@ -14,8 +23,15 @@ void setup() {
     topography.resize(16,9);
     topography.loadPixels();
     sphere = new Sphere(topography.width, topography.height,100,globe);
-    sphere.startSphere("standard");
+    sphere.startSphere(currentShape);
     sphere.calculateBiomes();
+    ico.createMesh();
+    for(int i = 0; i < 6; i++){
+        sCubeFaces[i] = new SpherifiedCube(detail,direction[i],radius);
+        sCubeFaces[i].constructCube();
+        cubeFaces[i] = new NormalizedCube(detail,direction[i],radius);
+        cubeFaces[i].constructCube();
+    }
     
 }
 void draw() {
@@ -23,7 +39,28 @@ void draw() {
     fill(255);
     lights();
     noStroke();
-    sphere.drawSphere();
+    switch(sphereMode){
+        case 0: 
+            sphere.drawSphere();
+            currentShape = "standard";
+        break;
+        case 1:
+        for(int i = 0; i < 6; i++){
+            cubeFaces[i].drawCube();
+        }
+        currentShape = "Normalized Cube";
+        break;
+        case 2:
+        for(int i = 0; i < 6; i++){
+            sCubeFaces[i].drawCube();
+        }
+        currentShape = "Spherified Cube";
+        break;
+        case 3:
+        ico.draw();
+        currentShape = "Icosahedron";
+        break;
+    } 
     if (keyPressed) {
         if (key == CODED) {
             if (keyCode == RIGHT) {
@@ -43,6 +80,18 @@ void draw() {
                 //this is inneficient but idc
                 sphere.regenSphere("standard");
             }
+        }
+        if(key == '1'){
+            sphereMode = 0;
+        }
+        if(key == '2'){
+            sphereMode = 1;
+        }
+        if(key == '3'){
+            sphereMode = 2;
+        }
+        if(key == '4'){
+            sphereMode = 3;
         }
     }   
     
