@@ -3,7 +3,14 @@
 PROBLEMS:
 WOOHOOOO THE GLOBE IS FULLY WORKING
 NEXT STEPS:
-    make the diff sphere types render the image (TALK TO FARRAR)
+    make the diff sphere types render the image (TALK TO FARRAR){
+        make water level local for each sphere
+        make their radius change based on altitude scalar
+        it might be gg for me
+        for norm and spheri cube: let certain faces become more detailed for efficiency
+
+    }
+
     make a gui (ask farrar how to approach it)
     calculate the rain and temp stuff in generateSphere in sphere class
     how the hell do i map the temps of mars? (no way im doing it manually). Maybe the same way im gonna do biomes? (with triangle mapping?)

@@ -45,10 +45,11 @@ void draw() {
         case 0: 
             sphere.drawSphere();
             currentShape = "Standard";
-            textSize(50);
+            textSize(25);
             fill(0,408,612);
-            text("Water Level: " + waterLevel, 0,200);
-            text("Altitude Scalar: " + altScalar, 0,250);
+            text("Water Level: " + waterLevel+ " (LEFT/RIGHT)", 0,175);
+            text("Altitude Scalar: " + altScalar + " (UP/DOWN)", 0,225);
+            text("Detail: " + sphere.w + " x " + sphere.h + " (Q/E)", 0,275);
             fill(255);
         break;
         case 1:
@@ -56,9 +57,11 @@ void draw() {
                 cubeFaces[i].drawCube();
             }
             currentShape = "Normalized Cube";
-            textSize(50);
+            textSize(25);
             fill(0,408,612);
-            text("Detail: " + cubeFaces[1].resolution, 0,200);
+            text("Water Level: " + waterLevel+ " (LEFT/RIGHT)", 0,175);
+            text("Altitude Scalar: " + altScalar + " (UP/DOWN)", 0,225);
+            text("Detail: " + cubeFaces[1].resolution + " (Q/E)", 0,275);
             fill(255);
         break;
         case 2:
@@ -66,17 +69,21 @@ void draw() {
                 sCubeFaces[i].drawCube();
             }
             currentShape = "Spherified Cube";
-            textSize(50);
+            textSize(25);
             fill(0,408,612);
-            text("Detail: " + sCubeFaces[1].resolution, 0,200);
+            text("Water Level: " + waterLevel+ " (LEFT/RIGHT)", 0,175);
+            text("Altitude Scalar: " + altScalar + " (UP/DOWN)", 0,225);
+            text("Detail: " + sCubeFaces[1].resolution + " (Q/E)", 0,275);
             fill(255);
         break;
         case 3:
             ico.draw();
             currentShape = "Icosahedron";
-            textSize(50);
+            textSize(25);
             fill(0,408,612);
-            text("Detail: " + ico.recursionAmt, 0,200);
+            text("Water Level: " + waterLevel+ " (LEFT/RIGHT)", 0,175);
+            text("Altitude Scalar: " + altScalar + " (UP/DOWN)", 0,225);
+            text("Detail: " + ico.recursionAmt + " (Q/E)", 0,275);
             fill(255);
         break;
     } 
@@ -86,21 +93,18 @@ void draw() {
                     if(sphereMode == 0){
                         waterLevel++; 
                     }
-                    if(sphereMode == 1 && cubeFaces[1].resolution < 30){
+                    if(sphereMode == 1){
                         for(int i = 0; i < cubeFaces.length;i++){
-                            cubeFaces[i].resolution++;
-                            cubeFaces[i].constructCube();
+                            //prob water level here
                         }
                     }
-                    if(sphereMode == 2 && sCubeFaces[1].resolution < 30){
+                    if(sphereMode == 2 ){
                         for(int i = 0; i < sCubeFaces.length;i++){
-                            sCubeFaces[i].resolution++;
-                            sCubeFaces[i].constructCube();
+                           //water level
                         }
                     }
-                    if(sphereMode == 3 && ico.recursionAmt < 5){
-                        ico.recursionAmt++;
-                        ico.createMesh();
+                    if(sphereMode == 3){
+                        
                     }
                 }
                 if (keyCode == LEFT) {
@@ -108,21 +112,18 @@ void draw() {
                         waterLevel--; 
                         sphere.scaleWaterDown();
                     }
-                    if(sphereMode == 1 && cubeFaces[1].resolution > 2){
+                    if(sphereMode == 1){
                         for(int i = 0; i < cubeFaces.length;i++){
-                            cubeFaces[i].resolution--;
-                            cubeFaces[i].constructCube();
+                            
                         }
                     }
-                    if(sphereMode == 2 && sCubeFaces[1].resolution > 2){
+                    if(sphereMode == 2){
                         for(int i = 0; i < sCubeFaces.length;i++){
-                            sCubeFaces[i].resolution--;
-                            sCubeFaces[i].constructCube();
+                            
                         }
                     }
-                    if(sphereMode == 3 && ico.recursionAmt > 0){
-                        ico.recursionAmt--;
-                        ico.createMesh();
+                    if(sphereMode == 3){
+
                     }
                 }
                 if (keyCode == UP) {
@@ -131,15 +132,85 @@ void draw() {
                         //this is inneficient but idc
                         sphere.regenSphere("standard");
                     }
+                    if(sphereMode == 1){
+                        for(int i = 0; i < cubeFaces.length;i++){
+                            //altitude
+                        }
+                    }
+                    if(sphereMode == 2){
+                        for(int i = 0; i < sCubeFaces.length;i++){
+                           //altitude
+                        }
+                    }
+                    if(sphereMode == 3 ){
+                        //altitude
+                    }
                 }
                 if (keyCode == DOWN && altScalar > 0.01) {
-                    if(sphereMode == 0){
+                    if(sphereMode == 0 && altScalar > 0.01){
                         altScalar -=.01;
                         //this is inneficient but idc
                         sphere.regenSphere("standard");
                     }
+                    if(sphereMode == 1){
+                        for(int i = 0; i < cubeFaces.length;i++){
+                            //altitude
+                        }
+                    }
+                    if(sphereMode == 2){
+                        for(int i = 0; i < sCubeFaces.length;i++){
+                            //altitude
+                        }
+                    }
+                    if(sphereMode == 3){
+                        //alt
+                    }
                 }
         }
+        if(key == 'e'){
+            if(sphereMode == 0){
+                //detail level
+                //sphere.regenSphere("standard");
+            }
+            if(sphereMode == 1 && cubeFaces[1].resolution < 30){
+                for(int i = 0; i < cubeFaces.length;i++){
+                    cubeFaces[i].resolution++;
+                    cubeFaces[i].constructCube();
+                }
+            }
+            if(sphereMode == 2 && sCubeFaces[1].resolution < 30){
+                for(int i = 0; i < sCubeFaces.length;i++){
+                    sCubeFaces[i].resolution++;
+                    sCubeFaces[i].constructCube();
+                }
+            }
+            if(sphereMode == 3 && ico.recursionAmt < 5){
+                ico.recursionAmt++;
+                ico.createMesh();
+            }
+        }
+        if(key == 'q'){
+            if(sphereMode == 0 && altScalar > 0.01){
+                //detail
+            }
+            if(sphereMode == 1 && cubeFaces[1].resolution > 2){
+                for(int i = 0; i < cubeFaces.length;i++){
+                    cubeFaces[i].resolution--;
+                    cubeFaces[i].constructCube();
+                }
+            }
+            if(sphereMode == 2 && sCubeFaces[1].resolution > 2){
+                for(int i = 0; i < sCubeFaces.length;i++){
+                    sCubeFaces[i].resolution--;
+                    sCubeFaces[i].constructCube();
+                }
+            }
+            if(sphereMode == 3 && ico.recursionAmt > 0){
+                ico.recursionAmt--;
+                ico.createMesh();
+            }
+        }
+        //this is for switching
         for(int i = 1; i < 5;i++){
             if(key == (char)(i+'0')){
                 sphereMode = i-1;
