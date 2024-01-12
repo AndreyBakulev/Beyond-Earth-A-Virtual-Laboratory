@@ -39,10 +39,17 @@ void draw() {
     fill(255);
     lights();
     noStroke();
+    textAlign(CENTER);
+    
     switch(sphereMode){
         case 0: 
             sphere.drawSphere();
-            currentShape = "standard";
+            currentShape = "Standard";
+            textSize(50);
+            fill(0,408,612);
+            text("Water Level: " + waterLevel, 0,200);
+            text("Altitude Scalar: " + altScalar, 0,250);
+            fill(255);
         break;
         case 1:
         for(int i = 0; i < 6; i++){
@@ -63,44 +70,39 @@ void draw() {
     } 
     if (keyPressed) {
         if (key == CODED) {
-            if (keyCode == RIGHT) {
-                waterLevel++; 
-            }
-            if (keyCode == LEFT) {
-                waterLevel--; 
-                sphere.scaleWaterDown();
-            }
-            if (keyCode == UP) {
-                altScalar +=.01; 
-                //this is inneficient but idc
-                sphere.regenSphere("standard");
-            }
-            if (keyCode == DOWN && altScalar > 0.01) {
-                altScalar -=.01;
-                //this is inneficient but idc
-                sphere.regenSphere("standard");
+            if(sphereMode == 0){
+                if (keyCode == RIGHT) {
+                    waterLevel++; 
+                }
+                if (keyCode == LEFT) {
+                    waterLevel--; 
+                    sphere.scaleWaterDown();
+                }
+                if (keyCode == UP) {
+                    altScalar +=.01; 
+                    //this is inneficient but idc
+                    sphere.regenSphere("standard");
+                }
+                if (keyCode == DOWN && altScalar > 0.01) {
+                    altScalar -=.01;
+                    //this is inneficient but idc
+                    sphere.regenSphere("standard");
+                }
             }
         }
-        if(key == '1'){
-            sphereMode = 0;
-        }
-        if(key == '2'){
-            sphereMode = 1;
-        }
-        if(key == '3'){
-            sphereMode = 2;
-        }
-        if(key == '4'){
-            sphereMode = 3;
+        for(int i = 1; i < 5;i++){
+            if(key == (char)(i+'0')){
+                sphereMode = i-1;
+            }
         }
     }   
     
-    textSize(50);
-    fill(0,408,612);
-    text("Water Level: " + waterLevel, - 150,200);
-    text("Altitude Scalar: " + altScalar, - 150,250);
+    
+    
     //string stuff for fun ig :D
     String planetName = photo.substring(0,photo.indexOf("Topography"));
     //lol all of this long code just to capitalize
-    text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1), - 125, - 200);
+    fill(0,408,612);
+    text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1),0, - 225);
+    text("Sphere Type: " + currentShape,0, -150);
 }

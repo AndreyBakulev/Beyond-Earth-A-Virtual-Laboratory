@@ -22,7 +22,7 @@ public class Topography extends PApplet {
 PROBLEMS:
 WOOHOOOO THE GLOBE IS FULLY WORKING
 NEXT STEPS:
-    combine this and sphereTypes to make it more efficient
+    make the diff sphere types render the image (TALK TO FARRAR)
     make a gui (ask farrar how to approach it)
     calculate the rain and temp stuff in generateSphere in sphere class
     how the hell do i map the temps of mars? (no way im doing it manually). Maybe the same way im gonna do biomes? (with triangle mapping?)
@@ -120,7 +120,7 @@ class Controller{
 public static final int DETAIL = 15;
 public static final int RADIUS = 100;
 public static final int SPHERE_MODE = 0;
-public static final int ICO_RECURSIVE = 0;
+public static final int ICO_RECURSIVE = 3;
 public static final int WATER_LEVEL = 0;
 public static final float ALTITUDE_SCALAR = 0.04f;
 public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
@@ -166,10 +166,17 @@ public void draw() {
     fill(255);
     lights();
     noStroke();
+    textAlign(CENTER);
+    
     switch(sphereMode){
         case 0: 
             sphere.drawSphere();
-            currentShape = "standard";
+            currentShape = "Standard";
+            textSize(50);
+            fill(0,408,612);
+            text("Water Level: " + waterLevel, 0,200);
+            text("Altitude Scalar: " + altScalar, 0,250);
+            fill(255);
         break;
         case 1:
         for(int i = 0; i < 6; i++){
@@ -190,46 +197,41 @@ public void draw() {
     } 
     if (keyPressed) {
         if (key == CODED) {
-            if (keyCode == RIGHT) {
-                waterLevel++; 
-            }
-            if (keyCode == LEFT) {
-                waterLevel--; 
-                sphere.scaleWaterDown();
-            }
-            if (keyCode == UP) {
-                altScalar +=.01f; 
-                //this is inneficient but idc
-                sphere.regenSphere("standard");
-            }
-            if (keyCode == DOWN && altScalar > 0.01f) {
-                altScalar -=.01f;
-                //this is inneficient but idc
-                sphere.regenSphere("standard");
+            if(sphereMode == 0){
+                if (keyCode == RIGHT) {
+                    waterLevel++; 
+                }
+                if (keyCode == LEFT) {
+                    waterLevel--; 
+                    sphere.scaleWaterDown();
+                }
+                if (keyCode == UP) {
+                    altScalar +=.01f; 
+                    //this is inneficient but idc
+                    sphere.regenSphere("standard");
+                }
+                if (keyCode == DOWN && altScalar > 0.01f) {
+                    altScalar -=.01f;
+                    //this is inneficient but idc
+                    sphere.regenSphere("standard");
+                }
             }
         }
-        if(key == '1'){
-            sphereMode = 0;
-        }
-        if(key == '2'){
-            sphereMode = 1;
-        }
-        if(key == '3'){
-            sphereMode = 2;
-        }
-        if(key == '4'){
-            sphereMode = 3;
+        for(int i = 1; i < 5;i++){
+            if(key == (char)(i+'0')){
+                sphereMode = i-1;
+            }
         }
     }   
     
-    textSize(50);
-    fill(0,408,612);
-    text("Water Level: " + waterLevel, - 150,200);
-    text("Altitude Scalar: " + altScalar, - 150,250);
+    
+    
     //string stuff for fun ig :D
     String planetName = photo.substring(0,photo.indexOf("Topography"));
     //lol all of this long code just to capitalize
-    text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1), - 125, - 200);
+    fill(0,408,612);
+    text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1),0, - 225);
+    text("Sphere Type: " + currentShape,0, -150);
 }
 class Icosahedron{
     int resolution;
