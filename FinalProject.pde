@@ -11,7 +11,7 @@ void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
-    topography.resize(32,18);
+    topography.resize(16,9);
     topography.loadPixels();
     sphere = new Sphere(topography.width, topography.height,100,globe);
     sphere.startSphere("standard");

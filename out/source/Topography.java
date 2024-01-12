@@ -128,7 +128,7 @@ public void setup() {
     /* size commented out by preprocessor */;
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
-    topography.resize(32,18);
+    topography.resize(16,9);
     topography.loadPixels();
     sphere = new Sphere(topography.width, topography.height,100,globe);
     sphere.startSphere("standard");
