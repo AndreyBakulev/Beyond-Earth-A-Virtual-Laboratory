@@ -52,43 +52,93 @@ void draw() {
             fill(255);
         break;
         case 1:
-        for(int i = 0; i < 6; i++){
-            cubeFaces[i].drawCube();
-        }
-        currentShape = "Normalized Cube";
+            for(int i = 0; i < 6; i++){
+                cubeFaces[i].drawCube();
+            }
+            currentShape = "Normalized Cube";
+            textSize(50);
+            fill(0,408,612);
+            text("Detail: " + cubeFaces[1].resolution, 0,200);
+            fill(255);
         break;
         case 2:
-        for(int i = 0; i < 6; i++){
-            sCubeFaces[i].drawCube();
-        }
-        currentShape = "Spherified Cube";
+            for(int i = 0; i < 6; i++){
+                sCubeFaces[i].drawCube();
+            }
+            currentShape = "Spherified Cube";
+            textSize(50);
+            fill(0,408,612);
+            text("Detail: " + sCubeFaces[1].resolution, 0,200);
+            fill(255);
         break;
         case 3:
-        ico.draw();
-        currentShape = "Icosahedron";
+            ico.draw();
+            currentShape = "Icosahedron";
+            textSize(50);
+            fill(0,408,612);
+            text("Detail: " + ico.recursionAmt, 0,200);
+            fill(255);
         break;
     } 
     if (keyPressed) {
         if (key == CODED) {
-            if(sphereMode == 0){
                 if (keyCode == RIGHT) {
-                    waterLevel++; 
+                    if(sphereMode == 0){
+                        waterLevel++; 
+                    }
+                    if(sphereMode == 1 && cubeFaces[1].resolution < 30){
+                        for(int i = 0; i < cubeFaces.length;i++){
+                            cubeFaces[i].resolution++;
+                            cubeFaces[i].constructCube();
+                        }
+                    }
+                    if(sphereMode == 2 && sCubeFaces[1].resolution < 30){
+                        for(int i = 0; i < sCubeFaces.length;i++){
+                            sCubeFaces[i].resolution++;
+                            sCubeFaces[i].constructCube();
+                        }
+                    }
+                    if(sphereMode == 3 && ico.recursionAmt < 5){
+                        ico.recursionAmt++;
+                        ico.createMesh();
+                    }
                 }
                 if (keyCode == LEFT) {
-                    waterLevel--; 
-                    sphere.scaleWaterDown();
+                    if(sphereMode == 0){
+                        waterLevel--; 
+                        sphere.scaleWaterDown();
+                    }
+                    if(sphereMode == 1 && cubeFaces[1].resolution > 2){
+                        for(int i = 0; i < cubeFaces.length;i++){
+                            cubeFaces[i].resolution--;
+                            cubeFaces[i].constructCube();
+                        }
+                    }
+                    if(sphereMode == 2 && sCubeFaces[1].resolution > 2){
+                        for(int i = 0; i < sCubeFaces.length;i++){
+                            sCubeFaces[i].resolution--;
+                            sCubeFaces[i].constructCube();
+                        }
+                    }
+                    if(sphereMode == 3 && ico.recursionAmt > 0){
+                        ico.recursionAmt--;
+                        ico.createMesh();
+                    }
                 }
                 if (keyCode == UP) {
-                    altScalar +=.01; 
-                    //this is inneficient but idc
-                    sphere.regenSphere("standard");
+                    if(sphereMode == 0){
+                        altScalar +=.01; 
+                        //this is inneficient but idc
+                        sphere.regenSphere("standard");
+                    }
                 }
                 if (keyCode == DOWN && altScalar > 0.01) {
-                    altScalar -=.01;
-                    //this is inneficient but idc
-                    sphere.regenSphere("standard");
+                    if(sphereMode == 0){
+                        altScalar -=.01;
+                        //this is inneficient but idc
+                        sphere.regenSphere("standard");
+                    }
                 }
-            }
         }
         for(int i = 1; i < 5;i++){
             if(key == (char)(i+'0')){
@@ -96,9 +146,6 @@ void draw() {
             }
         }
     }   
-    
-    
-    
     //string stuff for fun ig :D
     String planetName = photo.substring(0,photo.indexOf("Topography"));
     //lol all of this long code just to capitalize

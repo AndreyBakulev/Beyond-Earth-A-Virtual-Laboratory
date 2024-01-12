@@ -53,11 +53,3 @@ class NormalizedCube{
         }
     }
 }
-
-/*
-p1 x=0 , y= 1, z = -20
-p2 x=0 , y= 1, z = -20
-
-PROBLEMS:
-percentDone rounds to int so thats fs a problem
-*/
