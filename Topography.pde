@@ -1,7 +1,17 @@
 /* 
 
 PROBLEMS:
-WOOHOOOO THE GLOBE IS FULLY WORKING
+    lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){
+        its coming from the arrays being made at the start and remembering the whole picture,
+        then when i scale it down, i only shrink the height and width.
+        how to solve: change the arrays too when u shrink
+        ORR SET UP A WHOLE NEW CAM SYSTEM{
+            in this system, you load the whole image at the start, but only focus on a small bit of it
+            maybe better?
+        }
+    }
+going up in detail is messed up cus of arrayoutofbounds
+
 NEXT STEPS:
     make the diff sphere types render the image (TALK TO FARRAR){
         make water level local for each sphere

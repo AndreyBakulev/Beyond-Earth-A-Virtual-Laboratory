@@ -20,7 +20,17 @@ public class Topography extends PApplet {
 /* 
 
 PROBLEMS:
-WOOHOOOO THE GLOBE IS FULLY WORKING
+    lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){
+        its coming from the arrays being made at the start and remembering the whole picture,
+        then when i scale it down, i only shrink the height and width.
+        how to solve: change the arrays too when u shrink
+        ORR SET UP A WHOLE NEW CAM SYSTEM{
+            in this system, you load the whole image at the start, but only focus on a small bit of it
+            maybe better?
+        }
+    }
+going up in detail is messed up cus of arrayoutofbounds
+
 NEXT STEPS:
     make the diff sphere types render the image (TALK TO FARRAR){
         make water level local for each sphere
@@ -131,6 +141,7 @@ public static final int ICO_RECURSIVE = 0;
 public static final int WATER_LEVEL = 0;
 public static final float ALTITUDE_SCALAR = 0.04f;
 public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
+public static final int PHOTO_DETAIL = 200;
 }
 
 PeasyCam cam;
@@ -138,6 +149,7 @@ Vector3D[][] globe;
 PImage topography;
 int w,h;
 Sphere sphere;
+int photoDetail = Controller.PHOTO_DETAIL;
 String photo = Controller.GREYSCALE_IMAGE;
 int waterLevel = Controller.WATER_LEVEL;
 float altScalar = Controller.ALTITUDE_SCALAR;
@@ -145,6 +157,7 @@ int detail = Controller.DETAIL;
 int radius = Controller.RADIUS;
 int sphereMode = Controller.SPHERE_MODE;
 int icoRecursive = Controller.ICO_RECURSIVE;
+double aspectRatio;
 NormalizedCube[] cubeFaces = new NormalizedCube[6];
 SpherifiedCube[] sCubeFaces = new SpherifiedCube[6];
 Icosahedron ico = new Icosahedron(icoRecursive,radius);
@@ -154,11 +167,12 @@ public void setup() {
     /* size commented out by preprocessor */;
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
-    topography.resize(16,9);
+    aspectRatio =  1 / ((double)(topography.width)/(double)(topography.height));
+    topography.resize(photoDetail,(int) (photoDetail*aspectRatio));
     topography.loadPixels();
-    sphere = new Sphere(topography.width, topography.height,100,globe);
+    sphere = new Sphere(radius,globe);
     sphere.startSphere(currentShape);
-    sphere.calculateBiomes();
+    //sphere.calculateBiomes();
     ico.createMesh();
     for(int i = 0; i < 6; i++){
         sCubeFaces[i] = new SpherifiedCube(detail,direction[i],radius);
@@ -174,7 +188,6 @@ public void draw() {
     lights();
     noStroke();
     textAlign(CENTER);
-    
     switch(sphereMode){
         case 0: 
             sphere.drawSphere();
@@ -303,8 +316,10 @@ public void draw() {
         }
         if(key == 'e'){
             if(sphereMode == 0){
-                //detail level
-                //sphere.regenSphere("standard");
+                sphere.w++;
+                sphere.h = (int) (sphere.w * aspectRatio);
+                topography.resize(sphere.w,sphere.h);
+                sphere.regenSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 30){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -325,7 +340,9 @@ public void draw() {
         }
         if(key == 'q'){
             if(sphereMode == 0 && altScalar > 0.01f){
-                //detail
+                sphere.w--;
+                sphere.h = (int) (sphere.w * aspectRatio);
+                sphere.regenSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -540,9 +557,9 @@ class Sphere {
     double[][] altitude;
     float[][] tempMap;
     float[][] rainMap;
-    Sphere(int w, int h, float r, Vector3D[][] globe) {
-        this.w = w;
-        this.h = h;
+    Sphere(float r, Vector3D[][] globe) {
+        this.w = topography.width;
+        this.h = topography.height;
         this.r = r;
         this.globe = globe;
     }
@@ -636,7 +653,7 @@ class Sphere {
         }
     }
     public void regenSphere(String sphereType) {
-        //drawing simple sphere
+        //drawing simple spheres
         if(sphereType.equals("standard")){
             for (int i = 0; i < h; i++) {
                 // mapping the latitude as i percent of the way to total (i/total) and putting

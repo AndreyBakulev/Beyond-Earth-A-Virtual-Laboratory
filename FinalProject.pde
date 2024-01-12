@@ -4,6 +4,7 @@ Vector3D[][] globe;
 PImage topography;
 int w,h;
 Sphere sphere;
+int photoDetail = Controller.PHOTO_DETAIL;
 String photo = Controller.GREYSCALE_IMAGE;
 int waterLevel = Controller.WATER_LEVEL;
 float altScalar = Controller.ALTITUDE_SCALAR;
@@ -11,6 +12,7 @@ int detail = Controller.DETAIL;
 int radius = Controller.RADIUS;
 int sphereMode = Controller.SPHERE_MODE;
 int icoRecursive = Controller.ICO_RECURSIVE;
+double aspectRatio;
 NormalizedCube[] cubeFaces = new NormalizedCube[6];
 SpherifiedCube[] sCubeFaces = new SpherifiedCube[6];
 Icosahedron ico = new Icosahedron(icoRecursive,radius);
@@ -20,11 +22,12 @@ void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
     topography = loadImage(photo);
-    topography.resize(16,9);
+    aspectRatio =  1 / ((double)(topography.width)/(double)(topography.height));
+    topography.resize(photoDetail,(int) (photoDetail*aspectRatio));
     topography.loadPixels();
-    sphere = new Sphere(topography.width, topography.height,100,globe);
+    sphere = new Sphere(radius,globe);
     sphere.startSphere(currentShape);
-    sphere.calculateBiomes();
+    //sphere.calculateBiomes();
     ico.createMesh();
     for(int i = 0; i < 6; i++){
         sCubeFaces[i] = new SpherifiedCube(detail,direction[i],radius);
@@ -40,7 +43,6 @@ void draw() {
     lights();
     noStroke();
     textAlign(CENTER);
-    
     switch(sphereMode){
         case 0: 
             sphere.drawSphere();
@@ -169,8 +171,10 @@ void draw() {
         }
         if(key == 'e'){
             if(sphereMode == 0){
-                //detail level
-                //sphere.regenSphere("standard");
+                sphere.w++;
+                sphere.h = (int) (sphere.w * aspectRatio);
+                topography.resize(sphere.w,sphere.h);
+                sphere.regenSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 30){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -191,7 +195,9 @@ void draw() {
         }
         if(key == 'q'){
             if(sphereMode == 0 && altScalar > 0.01){
-                //detail
+                sphere.w--;
+                sphere.h = (int) (sphere.w * aspectRatio);
+                sphere.regenSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
                 for(int i = 0; i < cubeFaces.length;i++){

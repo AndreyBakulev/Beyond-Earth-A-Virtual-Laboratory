@@ -6,9 +6,9 @@ class Sphere {
     double[][] altitude;
     float[][] tempMap;
     float[][] rainMap;
-    Sphere(int w, int h, float r, Vector3D[][] globe) {
-        this.w = w;
-        this.h = h;
+    Sphere(float r, Vector3D[][] globe) {
+        this.w = topography.width;
+        this.h = topography.height;
         this.r = r;
         this.globe = globe;
     }
@@ -102,7 +102,7 @@ class Sphere {
         }
     }
     void regenSphere(String sphereType) {
-        //drawing simple sphere
+        //drawing simple spheres
         if(sphereType.equals("standard")){
             for (int i = 0; i < h; i++) {
                 // mapping the latitude as i percent of the way to total (i/total) and putting
