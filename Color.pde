@@ -2,6 +2,9 @@ public static class Color {
     private double r,g,b;
    
     //just making colors to make life easier
+    public static Color Water(){
+        return new Color(15,65,156);
+    }
     public static Color Tundra(){
         return new Color(148,169,174);
     }

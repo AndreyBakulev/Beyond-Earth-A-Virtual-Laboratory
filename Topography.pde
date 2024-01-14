@@ -5,6 +5,8 @@ PROBLEMS:
         its coming from the arrays being made at the start and remembering the whole picture,
         then when i scale it down, i only shrink the height and width.
         how to solve: change the arrays too when u shrink
+        UPDATE: I think the prob is topography.pixels isnt changing AND im only getting the greyvalues once with startSphere
+        I need to change both of those so they happen every time
         ORR SET UP A WHOLE NEW CAM SYSTEM{
             in this system, you load the whole image at the start, but only focus on a small bit of it
             maybe better?
