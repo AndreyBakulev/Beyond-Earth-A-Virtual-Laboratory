@@ -1,4 +1,11 @@
 /* 
+FINAL CHANGES:
+fix detail level
+add a simple gui w description {
+    maybe add a feature list
+}
+maybe try mapping the stuff on the cube & ico (too hard for time constraint?)
+
 
 PROBLEMS:
     lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){

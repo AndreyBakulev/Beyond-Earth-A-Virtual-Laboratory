@@ -63,7 +63,7 @@ void draw() {
             fill(0,408,612);
             text("Water Level: " + waterLevel+ " (LEFT/RIGHT)", 0,175);
             text("Altitude Scalar: " + altScalar + " (UP/DOWN)", 0,225);
-            text("Detail: " + cubeFaces[1].resolution + " (Q/E)", 0,275);
+            text("Detail: " + ((cubeFaces[1].resolution)-1) + " (Q/E)", 0,275);
             fill(255);
         break;
         case 2:
@@ -75,7 +75,7 @@ void draw() {
             fill(0,408,612);
             text("Water Level: " + waterLevel+ " (LEFT/RIGHT)", 0,175);
             text("Altitude Scalar: " + altScalar + " (UP/DOWN)", 0,225);
-            text("Detail: " + sCubeFaces[1].resolution + " (Q/E)", 0,275);
+            text("Detail: " + ((sCubeFaces[1].resolution)-1)+ " (Q/E)", 0,275);
             fill(255);
         break;
         case 3:
@@ -175,13 +175,13 @@ void draw() {
                 topography.loadPixels();
                 sphere.regenSphere("standard");
             }
-            if(sphereMode == 1 && cubeFaces[1].resolution < 30){
+            if(sphereMode == 1 && cubeFaces[1].resolution < 31){
                 for(int i = 0; i < cubeFaces.length;i++){
                     cubeFaces[i].resolution++;
                     cubeFaces[i].constructCube();
                 }
             }
-            if(sphereMode == 2 && sCubeFaces[1].resolution < 30){
+            if(sphereMode == 2 && sCubeFaces[1].resolution < 31){
                 for(int i = 0; i < sCubeFaces.length;i++){
                     sCubeFaces[i].resolution++;
                     sCubeFaces[i].constructCube();
