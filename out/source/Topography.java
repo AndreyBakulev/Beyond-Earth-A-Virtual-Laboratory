@@ -19,41 +19,15 @@ public class Topography extends PApplet {
 
 /* 
 FINAL CHANGES:
-make water realer by adding depth (more water = darker)
-when using detail level, make it go down by 10 percent instead of by 1 every time
 add a simple gui w description {
     maybe add a feature list
 }
+how the hell do i map the temps of mars? (no way im doing it manually). Maybe the same way im gonna do biomes? (with triangle mapping?)
 maybe try mapping the stuff on the cube & ico (too hard for time constraint?)
 maybe make enum for spheremode since nobody knows what it means (spheremode.ico)
 
 PROBLEMS:
     ico is gonna make gaps cus triangles r gonna be diff altitudes (get each vertex alt)
-    lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){
-        its coming from the arrays being made at the start and remembering the whole picture,
-        then when i scale it down, i only shrink the height and width.
-        how to solve: change the arrays too when u shrink
-        UPDATE: I think the prob is topography.pixels isnt changing AND im only getting the greyvalues once with startSphere
-        I need to change both of those so they happen every time
-        ORR SET UP A WHOLE NEW CAM SYSTEM{
-            in this system, you load the whole image at the start, but only focus on a small bit of it
-            maybe better?
-        }
-    }
-going up in detail is messed up cus of arrayoutofbounds
-
-NEXT STEPS:
-    make the diff sphere types render the image (TALK TO FARRAR){
-        make water level local for each sphere
-        make their radius change based on altitude scalar
-        it might be gg for me
-        for norm and spheri cube: let certain faces become more detailed for efficiency
-
-    }
-
-    make a gui (ask farrar how to approach it)
-    calculate the rain and temp stuff in generateSphere in sphere class
-    how the hell do i map the temps of mars? (no way im doing it manually). Maybe the same way im gonna do biomes? (with triangle mapping?)
 
 POSSIBLE OPTIMIZATION:
 maybe import the graph and add triangles to match it, then send out ray to check if it hits
@@ -72,17 +46,21 @@ https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
 
 
 FEATURE LIST:
+different sphere visualization types
 using rayleigh scattering to correctly predict what the water would look like (actually hard)
 detail level
 wrapping
-taking in any greyscale image
+my own vector classes
+binary conversion
+taking in any greyscale image (works with any)
 water rises and falls
 altitude scalar
-different sphere visualization types
 controller
-binary conversion
-GLITCHES IM AWARE OF:
+
+
+FEATURES (glitches) IM AWARE OF:
 when scaling altitude, some quads change color before they r underwater (bc one vertex is underwater and it changes the whole quad)
+sphereType doesnt do anything
 */
 public static class Color {
     private double r,g,b;
@@ -164,14 +142,15 @@ public static class Color {
 
 }
 class Controller{
-public static final int DETAIL = 2;
-public static final int RADIUS = 100;
-public static final int SPHERE_MODE = 0;
-public static final int ICO_RECURSIVE = 0;
-public static final int WATER_LEVEL = 0;
-public static final float ALTITUDE_SCALAR = 0.04f;
+public static final int DETAIL = 2; // 2 < x < 30
+public static final int RADIUS = 100; // 50 < x < 1000
+public static final int SPHERE_MODE = 0; // 0 < x < 3
+public static final int ICO_RECURSIVE = 0; // 0 < x < 8
+public static final int WATER_LEVEL = 0; // 0 < x < 300
+public static final float ALTITUDE_SCALAR = 0.04f; // 0.01 < x < 1
 public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
-public static final int PHOTO_DETAIL = 200;
+public static final int PHOTO_DETAIL = 200; // 5 < x < 1024 (image width)
+public static final double RAYLEIGH_STRENGTH = 0.01f; // 0.005 < x < 0.1
 }
 
 PeasyCam cam;
@@ -343,7 +322,7 @@ public void draw() {
         }
         if(key == 'e'){
             if(sphereMode == 0 && sphere.w < originalTopography.width){
-                sphere.w++;
+                sphere.w = (int) (1.02f*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
@@ -366,7 +345,7 @@ public void draw() {
         }
         if(key == 'q'){
             if(sphereMode == 0 && sphere.w > 1){
-                sphere.w--;
+                sphere.w =(int) (.98f*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
@@ -647,7 +626,7 @@ class Sphere {
                     //equation I = I0 + (1/e^kd) (where I is intensity, I0 is intensity at water level, k is annuation coefficient and d is depth)
                     //to correctly predict the water's intensity at a certain point, then im getting how much more intense it is (intensity/waterIntensity)
                     //and therefore getting the color at the position
-                    float intensity = (float) (waterIntensity*(1/exp((float) ((.01f*(waterLevel-altitude[i][j]))))));
+                    float intensity = (float) (waterIntensity*(1/exp((float) ((Controller.RAYLEIGH_STRENGTH*(waterLevel-altitude[i][j]))))));
                     fill((float)Color.Water().getR()*(intensity/waterIntensity), (float)Color.Water().getG()*(intensity/waterIntensity), (float)Color.Water().getB()*(intensity/waterIntensity));
                     //reversed version cus it looks cool
                     //fill((float)Color.Water().getR()*(waterIntensity/intensity), (float)Color.Water().getG()*(waterIntensity/intensity), (float)Color.Water().getB()*(waterIntensity/intensity));

@@ -168,7 +168,7 @@ void draw() {
         }
         if(key == 'e'){
             if(sphereMode == 0 && sphere.w < originalTopography.width){
-                sphere.w++;
+                sphere.w = (int) (1.02*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
@@ -191,7 +191,7 @@ void draw() {
         }
         if(key == 'q'){
             if(sphereMode == 0 && sphere.w > 1){
-                sphere.w--;
+                sphere.w =(int) (.98*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
