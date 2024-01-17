@@ -72,6 +72,8 @@ class Sphere {
                     //and therefore getting the color at the position
                     float intensity = (float) (waterIntensity*(1/exp((float) ((.01*(waterLevel-altitude[i][j]))))));
                     fill((float)Color.Water().getR()*(intensity/waterIntensity), (float)Color.Water().getG()*(intensity/waterIntensity), (float)Color.Water().getB()*(intensity/waterIntensity));
+                    //reversed version cus it looks cool
+                    //fill((float)Color.Water().getR()*(waterIntensity/intensity), (float)Color.Water().getG()*(waterIntensity/intensity), (float)Color.Water().getB()*(waterIntensity/intensity));
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
