@@ -198,7 +198,7 @@ void draw() {
                 sphere.h = (int) (sphere.w * aspectRatio);
                 topography.resize(sphere.w,sphere.h);
                 topography.loadPixels();
-                sphere.regenSphere("standard");
+                sphere.startSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
                 for(int i = 0; i < cubeFaces.length;i++){

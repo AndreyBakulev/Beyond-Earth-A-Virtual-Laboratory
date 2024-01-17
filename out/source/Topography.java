@@ -24,7 +24,7 @@ add a simple gui w description {
     maybe add a feature list
 }
 maybe try mapping the stuff on the cube & ico (too hard for time constraint?)
-
+maybe make enum for spheremode since nobody knows what it means (spheremode.ico)
 
 PROBLEMS:
     lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){
@@ -355,7 +355,7 @@ public void draw() {
                 sphere.h = (int) (sphere.w * aspectRatio);
                 topography.resize(sphere.w,sphere.h);
                 topography.loadPixels();
-                sphere.regenSphere("standard");
+                sphere.startSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
                 for(int i = 0; i < cubeFaces.length;i++){
