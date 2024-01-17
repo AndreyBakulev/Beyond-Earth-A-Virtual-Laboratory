@@ -153,12 +153,12 @@ public static final int ICO_RECURSIVE = 0;
 public static final int WATER_LEVEL = 0;
 public static final float ALTITUDE_SCALAR = 0.04f;
 public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
-public static final int PHOTO_DETAIL = 200;
+public static final int PHOTO_DETAIL = 500;
 }
 
 PeasyCam cam;
 Vector3D[][] globe;
-PImage topography;
+PImage originalTopography;
 int w,h;
 Sphere sphere;
 int photoDetail = Controller.PHOTO_DETAIL;
@@ -178,10 +178,9 @@ String currentShape = "standard";
 public void setup() {
     /* size commented out by preprocessor */;
     cam = new PeasyCam(this,500);
-    topography = loadImage(photo);
-    aspectRatio =  1 / ((double)(topography.width)/(double)(topography.height));
-    topography.resize(photoDetail,(int) (photoDetail*aspectRatio));
-    topography.loadPixels();
+    originalTopography = loadImage(photo);
+    originalTopography.loadPixels();
+    aspectRatio =  1 / ((double)(originalTopography.width)/(double)(originalTopography.height));
     sphere = new Sphere(radius,globe);
     sphere.startSphere(currentShape);
     //sphere.calculateBiomes();
@@ -325,12 +324,10 @@ public void draw() {
                 }
         }
         if(key == 'e'){
-            if(sphereMode == 0 && sphere.w < photoDetail){
-                sphere.w++;
+            if(sphereMode == 0 && sphere.w < originalTopography.width){
+                sphere.w+= 5;
                 sphere.h = (int) (sphere.w * aspectRatio);
-                topography.resize(sphere.w,sphere.h);
-                topography.loadPixels();
-                sphere.regenSphere("standard");
+                sphere.startSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 31){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -351,10 +348,8 @@ public void draw() {
         }
         if(key == 'q'){
             if(sphereMode == 0 && sphere.w > 1){
-                sphere.w--;
+                sphere.w-= 5;
                 sphere.h = (int) (sphere.w * aspectRatio);
-                topography.resize(sphere.w,sphere.h);
-                topography.loadPixels();
                 sphere.startSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
@@ -570,9 +565,10 @@ class Sphere {
     double[][] altitude;
     float[][] tempMap;
     float[][] rainMap;
+    PImage topography;
     Sphere(float r, Vector3D[][] globe) {
-        this.w = topography.width;
-        this.h = topography.height;
+        this.w = Controller.PHOTO_DETAIL;
+        this.h = (int) (Controller.PHOTO_DETAIL*aspectRatio);
         this.r = r;
         this.globe = globe;
     }
@@ -583,6 +579,9 @@ class Sphere {
             tempMap = new float[h][w];
             rainMap = new float[h][w];
             altitude = new double[h][w];
+            topography = originalTopography.copy();
+            topography.resize(w,h);
+            topography.loadPixels();
             x = 0;
             y = 0;
             z = 0;

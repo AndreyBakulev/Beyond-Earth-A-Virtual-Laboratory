@@ -6,9 +6,10 @@ class Sphere {
     double[][] altitude;
     float[][] tempMap;
     float[][] rainMap;
+    PImage topography;
     Sphere(float r, Vector3D[][] globe) {
-        this.w = topography.width;
-        this.h = topography.height;
+        this.w = Controller.PHOTO_DETAIL;
+        this.h = (int) (Controller.PHOTO_DETAIL*aspectRatio);
         this.r = r;
         this.globe = globe;
     }
@@ -19,6 +20,9 @@ class Sphere {
             tempMap = new float[h][w];
             rainMap = new float[h][w];
             altitude = new double[h][w];
+            topography = originalTopography.copy();
+            topography.resize(w,h);
+            topography.loadPixels();
             x = 0;
             y = 0;
             z = 0;

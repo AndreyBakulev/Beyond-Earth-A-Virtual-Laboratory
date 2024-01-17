@@ -1,7 +1,7 @@
 import peasy.*;
 PeasyCam cam;
 Vector3D[][] globe;
-PImage topography;
+PImage originalTopography;
 int w,h;
 Sphere sphere;
 int photoDetail = Controller.PHOTO_DETAIL;
@@ -21,10 +21,9 @@ String currentShape = "standard";
 void setup() {
     size(1280,720,P3D);
     cam = new PeasyCam(this,500);
-    topography = loadImage(photo);
-    aspectRatio =  1 / ((double)(topography.width)/(double)(topography.height));
-    topography.resize(photoDetail,(int) (photoDetail*aspectRatio));
-    topography.loadPixels();
+    originalTopography = loadImage(photo);
+    originalTopography.loadPixels();
+    aspectRatio =  1 / ((double)(originalTopography.width)/(double)(originalTopography.height));
     sphere = new Sphere(radius,globe);
     sphere.startSphere(currentShape);
     //sphere.calculateBiomes();
@@ -168,12 +167,10 @@ void draw() {
                 }
         }
         if(key == 'e'){
-            if(sphereMode == 0 && sphere.w < photoDetail){
+            if(sphereMode == 0 && sphere.w < originalTopography.width){
                 sphere.w++;
                 sphere.h = (int) (sphere.w * aspectRatio);
-                topography.resize(sphere.w,sphere.h);
-                topography.loadPixels();
-                sphere.regenSphere("standard");
+                sphere.startSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 31){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -196,8 +193,6 @@ void draw() {
             if(sphereMode == 0 && sphere.w > 1){
                 sphere.w--;
                 sphere.h = (int) (sphere.w * aspectRatio);
-                topography.resize(sphere.w,sphere.h);
-                topography.loadPixels();
                 sphere.startSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
