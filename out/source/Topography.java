@@ -141,7 +141,7 @@ public static final int ICO_RECURSIVE = 0;
 public static final int WATER_LEVEL = 0;
 public static final float ALTITUDE_SCALAR = 0.04f;
 public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
-public static final int PHOTO_DETAIL = 200;
+public static final int PHOTO_DETAIL = 1024;
 }
 
 PeasyCam cam;
@@ -315,7 +315,7 @@ public void draw() {
                 }
         }
         if(key == 'e'){
-            if(sphereMode == 0){
+            if(sphereMode == 0 && sphere.w < photoDetail){
                 sphere.w++;
                 sphere.h = (int) (sphere.w * aspectRatio);
                 topography.resize(sphere.w,sphere.h);
@@ -339,7 +339,7 @@ public void draw() {
             }
         }
         if(key == 'q'){
-            if(sphereMode == 0 && altScalar > 0.01f){
+            if(sphereMode == 0 && sphere.w > 1){
                 sphere.w--;
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.regenSphere("standard");

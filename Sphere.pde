@@ -97,7 +97,6 @@ class Sphere {
                 vertex((float)0,(float)(1 * ((r + (altitude[i][0] * altScalar)))),(float)0);
                 vertex((float)0,(float)(1 * ((r + (altitude[i][0] * altScalar)))),(float)0);
             }
-            
             endShape();
         }
     }
