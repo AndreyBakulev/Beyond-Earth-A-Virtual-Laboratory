@@ -50,6 +50,7 @@ class Sphere {
                 }
             }
         }        
+        //this.calculateBiomes();
     }
     void drawSphere() {
         for(int i = 0; i < h; i++){
@@ -64,7 +65,8 @@ class Sphere {
             for (int j = 0; j < w; j++) {
                 // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
-                    fill((float)Color.Water().getR(), (float)Color.Water().getG(), (float)Color.Water().getB());
+                    float percent = map((float)altitude[i][j],(float)0,(float)waterLevel,(float)0,(float)1);
+                    fill((float)Color.Water().getR()*percent, (float)Color.Water().getG()*percent, (float)Color.Water().getB()*percent);
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
@@ -206,6 +208,3 @@ class Sphere {
         return decimal;
     }
 }
-/* NOTES:
-altitude is now an array which holds the values of each pixels altitude (called once and is unchanged)
-*/

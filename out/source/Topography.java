@@ -19,7 +19,8 @@ public class Topography extends PApplet {
 
 /* 
 FINAL CHANGES:
-fix detail level
+make water realer by adding depth (more water = darker)
+when using detail level, make it go down by 10 percent instead of by 1 every time
 add a simple gui w description {
     maybe add a feature list
 }
@@ -27,6 +28,7 @@ maybe try mapping the stuff on the cube & ico (too hard for time constraint?)
 maybe make enum for spheremode since nobody knows what it means (spheremode.ico)
 
 PROBLEMS:
+    ico is gonna make gaps cus triangles r gonna be diff altitudes (get each vertex alt)
     lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){
         its coming from the arrays being made at the start and remembering the whole picture,
         then when i scale it down, i only shrink the height and width.
@@ -71,7 +73,7 @@ public static class Color {
    
     //just making colors to make life easier
     public static Color Water(){
-        return new Color(15,65,156);
+        return new Color(15,94,156);
     }
     public static Color Tundra(){
         return new Color(148,169,174);
@@ -153,7 +155,7 @@ public static final int ICO_RECURSIVE = 0;
 public static final int WATER_LEVEL = 0;
 public static final float ALTITUDE_SCALAR = 0.04f;
 public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
-public static final int PHOTO_DETAIL = 500;
+public static final int PHOTO_DETAIL = 200;
 }
 
 PeasyCam cam;
@@ -325,7 +327,7 @@ public void draw() {
         }
         if(key == 'e'){
             if(sphereMode == 0 && sphere.w < originalTopography.width){
-                sphere.w+= 5;
+                sphere.w++;
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
@@ -348,7 +350,7 @@ public void draw() {
         }
         if(key == 'q'){
             if(sphereMode == 0 && sphere.w > 1){
-                sphere.w-= 5;
+                sphere.w--;
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
@@ -609,6 +611,7 @@ class Sphere {
                 }
             }
         }        
+        //this.calculateBiomes();
     }
     public void drawSphere() {
         for(int i = 0; i < h; i++){
@@ -623,7 +626,8 @@ class Sphere {
             for (int j = 0; j < w; j++) {
                 // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
-                    fill((float)Color.Water().getR(), (float)Color.Water().getG(), (float)Color.Water().getB());
+                    float percent = map((float)altitude[i][j],(float)0,(float)waterLevel,(float)0,(float)1);
+                    fill((float)Color.Water().getR()*percent, (float)Color.Water().getG()*percent, (float)Color.Water().getB()*percent);
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
@@ -765,9 +769,6 @@ class Sphere {
         return decimal;
     }
 }
-/* NOTES:
-altitude is now an array which holds the values of each pixels altitude (called once and is unchanged)
-*/
 class SpherifiedCube{
     int resolution;
     Vector3D localUp;

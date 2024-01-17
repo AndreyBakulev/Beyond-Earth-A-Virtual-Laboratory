@@ -1,6 +1,7 @@
 /* 
 FINAL CHANGES:
-fix detail level
+make water realer by adding depth (more water = darker)
+when using detail level, make it go down by 10 percent instead of by 1 every time
 add a simple gui w description {
     maybe add a feature list
 }
@@ -8,6 +9,7 @@ maybe try mapping the stuff on the cube & ico (too hard for time constraint?)
 maybe make enum for spheremode since nobody knows what it means (spheremode.ico)
 
 PROBLEMS:
+    ico is gonna make gaps cus triangles r gonna be diff altitudes (get each vertex alt)
     lowering detail doesnt work (I think the initial image isnt changing but the w and h are so its shrinking){
         its coming from the arrays being made at the start and remembering the whole picture,
         then when i scale it down, i only shrink the height and width.
