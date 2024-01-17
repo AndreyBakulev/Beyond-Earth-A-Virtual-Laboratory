@@ -73,7 +73,7 @@ public static class Color {
    
     //just making colors to make life easier
     public static Color Water(){
-        return new Color(15,94,156);
+        return new Color(7,75,130);
     }
     public static Color Tundra(){
         return new Color(148,169,174);
@@ -626,7 +626,7 @@ class Sphere {
             for (int j = 0; j < w; j++) {
                 // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
-                    float percent = map((float)altitude[i][j],(float)0,(float)waterLevel,(float)0,(float)1);
+                    float percent = map((float)altitude[i][j],(float)0,(float)waterLevel,(float)0.2f,(float)1);
                     fill((float)Color.Water().getR()*percent, (float)Color.Water().getG()*percent, (float)Color.Water().getB()*percent);
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
