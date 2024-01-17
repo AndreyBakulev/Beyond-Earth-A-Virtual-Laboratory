@@ -60,7 +60,7 @@ class Sphere {
             for (int j = 0; j < w; j++) {
                 // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
-                    fill(0, 0, 255);
+                    fill((float)Color.Water().getR(), (float)Color.Water().getG(), (float)Color.Water().getB());
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
@@ -118,7 +118,6 @@ class Sphere {
                     // storing the coords into array of vectors
                     globe[i][j] = new Vector3D(x, y, z);
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
-                    //altitude[i][j] = altitude[i][j] *((r + (altitude[i][j] * altScalar)) / r);
                     tempMap[i][j] = random(-10,35);
                     rainMap[i][j] = random(0,450);
                 }

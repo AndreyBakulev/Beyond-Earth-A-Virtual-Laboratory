@@ -92,9 +92,7 @@ void draw() {
     if (keyPressed) {
         if (key == CODED) {
                 if (keyCode == RIGHT) {
-                    if(sphereMode == 0){
-                        waterLevel++; 
-                    }
+                    if(sphereMode == 0 && waterLevel < 300){  waterLevel++;}
                     if(sphereMode == 1){
                         for(int i = 0; i < cubeFaces.length;i++){
                             //prob water level here
@@ -110,7 +108,7 @@ void draw() {
                     }
                 }
                 if (keyCode == LEFT) {
-                    if(sphereMode == 0){
+                    if(sphereMode == 0 && waterLevel > 0){
                         waterLevel--; 
                         sphere.scaleWaterDown();
                     }
@@ -174,6 +172,7 @@ void draw() {
                 sphere.w++;
                 sphere.h = (int) (sphere.w * aspectRatio);
                 topography.resize(sphere.w,sphere.h);
+                topography.loadPixels();
                 sphere.regenSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 30){
@@ -197,6 +196,8 @@ void draw() {
             if(sphereMode == 0 && sphere.w > 1){
                 sphere.w--;
                 sphere.h = (int) (sphere.w * aspectRatio);
+                topography.resize(sphere.w,sphere.h);
+                topography.loadPixels();
                 sphere.regenSphere("standard");
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
