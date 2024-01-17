@@ -64,9 +64,12 @@ class Sphere {
         for (int i = 0; i < h; i++) {
             beginShape(QUAD);
             for (int j = 0; j < w; j++) {
-                // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
                     //this is accurate water leveling
+                    //EXPLANATION FOR FARRAR: basically im using rayleigh scattering and 
+                    //equation I = I0 + (1/e^kd) (where I is intensity, I0 is intensity at water level, k is annuation coefficient and d is depth)
+                    //to correctly predict the water's intensity at a certain point, then im getting how much more intense it is (intensity/waterIntensity)
+                    //and therefore getting the color at the position
                     float intensity = (float) (waterIntensity*(1/exp((float) ((.01*(waterLevel-altitude[i][j]))))));
                     fill((float)Color.Water().getR()*(intensity/waterIntensity), (float)Color.Water().getG()*(intensity/waterIntensity), (float)Color.Water().getB()*(intensity/waterIntensity));
                 } else {

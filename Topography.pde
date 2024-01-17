@@ -53,5 +53,15 @@ https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
 
 
 FEATURE LIST:
-water is colored accurately using intensity calculation and rayleigh scattering
+using rayleigh scattering to correctly predict what the water would look like (actually hard)
+detail level
+wrapping
+taking in any greyscale image
+water rises and falls
+altitude scalar
+different sphere visualization types
+controller
+binary conversion
+GLITCHES IM AWARE OF:
+when scaling altitude, some quads change color before they r underwater (bc one vertex is underwater and it changes the whole quad)
 */
