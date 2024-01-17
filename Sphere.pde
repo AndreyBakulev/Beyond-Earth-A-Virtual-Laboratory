@@ -7,6 +7,7 @@ class Sphere {
     float[][] tempMap;
     float[][] rainMap;
     PImage topography;
+    float waterIntensity = (float) ((Color.Water().getR() * .299) + (Color.Water().getG()*.587) + (Color.Water().getB()*.114));
     Sphere(float r, Vector3D[][] globe) {
         this.w = Controller.PHOTO_DETAIL;
         this.h = (int) (Controller.PHOTO_DETAIL*aspectRatio);
@@ -65,8 +66,9 @@ class Sphere {
             for (int j = 0; j < w; j++) {
                 // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
-                    float percent = map((float)altitude[i][j],(float)0,(float)waterLevel,(float)0.2,(float)1);
-                    fill((float)Color.Water().getR()*percent, (float)Color.Water().getG()*percent, (float)Color.Water().getB()*percent);
+                    //this is accurate water leveling
+                    float intensity = (float) (waterIntensity*(1/exp((float) ((.01*(waterLevel-altitude[i][j]))))));
+                    fill((float)Color.Water().getR()*(intensity/waterIntensity), (float)Color.Water().getG()*(intensity/waterIntensity), (float)Color.Water().getB()*(intensity/waterIntensity));
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }

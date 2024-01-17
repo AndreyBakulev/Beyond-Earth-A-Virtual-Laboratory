@@ -3,7 +3,7 @@ public static class Color {
    
     //just making colors to make life easier
     public static Color Water(){
-        return new Color(7,75,130);
+        return new Color(12,82,138);
     }
     public static Color Tundra(){
         return new Color(148,169,174);

@@ -48,4 +48,10 @@ gulfstreams and grasslands and beaches
 adding something to auto detect range of colors from low to high (so i dont have to use grayscale)
 CLIMATE:
 https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
+
+
+
+
+FEATURE LIST:
+water is colored accurately using intensity calculation and rayleigh scattering
 */

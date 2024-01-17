@@ -67,13 +67,19 @@ gulfstreams and grasslands and beaches
 adding something to auto detect range of colors from low to high (so i dont have to use grayscale)
 CLIMATE:
 https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
+
+
+
+
+FEATURE LIST:
+water is colored accurately using intensity calculation and rayleigh scattering
 */
 public static class Color {
     private double r,g,b;
    
     //just making colors to make life easier
     public static Color Water(){
-        return new Color(7,75,130);
+        return new Color(12,82,138);
     }
     public static Color Tundra(){
         return new Color(148,169,174);
@@ -568,6 +574,7 @@ class Sphere {
     float[][] tempMap;
     float[][] rainMap;
     PImage topography;
+    float waterIntensity = (float) ((Color.Water().getR() * .299f) + (Color.Water().getG()*.587f) + (Color.Water().getB()*.114f));
     Sphere(float r, Vector3D[][] globe) {
         this.w = Controller.PHOTO_DETAIL;
         this.h = (int) (Controller.PHOTO_DETAIL*aspectRatio);
@@ -626,8 +633,9 @@ class Sphere {
             for (int j = 0; j < w; j++) {
                 // this is altitude stuff
                 if (altitude[i][j] <= waterLevel) {
-                    float percent = map((float)altitude[i][j],(float)0,(float)waterLevel,(float)0.2f,(float)1);
-                    fill((float)Color.Water().getR()*percent, (float)Color.Water().getG()*percent, (float)Color.Water().getB()*percent);
+                    //this is accurate water leveling
+                    float intensity = (float) (waterIntensity*(1/exp((float) ((.01f*(waterLevel-altitude[i][j]))))));
+                    fill((float)Color.Water().getR()*(intensity/waterIntensity), (float)Color.Water().getG()*(intensity/waterIntensity), (float)Color.Water().getB()*(intensity/waterIntensity));
                 } else {
                     fill((float)greyScale[i][j].getR(), (float)greyScale[i][j].getG(), (float)greyScale[i][j].getB());
                 }
