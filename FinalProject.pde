@@ -34,6 +34,7 @@ void setup() {
     aspectRatio =  1 / ((double)(originalTopography.width)/(double)(originalTopography.height));
     sphere = new Sphere(radius,globe);
     sphere.startSphere(currentShape);
+    //sphere.getBiomes();
     //sphere.calculateBiomes();
     ico.createMesh();
     for(int i = 0; i < 6; i++){
@@ -66,8 +67,6 @@ void draw() {
         text("FEATURES", width/2,525);
         text("QUIT", width/2,625);
         rectMode(CENTER);
-        // println("x: " + mouseX);
-        // println("y: " + mouseY);
         if(mouseX > width/2 -55 && mouseX < width/2 + 55 && mouseY > 300 && mouseY < 325){
             if(mousePressed){
                 state = STATE.GAME;
@@ -264,6 +263,8 @@ void draw() {
                 sphere.w = (int) ((1.02*sphere.w) + 1);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
+                // sphere.getBiomes();
+                // sphere.calculateBiomes();
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 31){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -287,6 +288,8 @@ void draw() {
                 sphere.w =(int) (.98*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
+                // sphere.getBiomes();
+                // sphere.calculateBiomes();
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
                 for(int i = 0; i < cubeFaces.length;i++){

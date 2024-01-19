@@ -14,6 +14,14 @@ class Sphere {
         this.r = r;
         this.globe = globe;
     }
+    void getBiomes(){
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                tempMap[i][j] = random(-10,35);
+                rainMap[i][j] = random(0,450);
+            }
+        }
+    }
     void startSphere(String sphereType) {
         if(sphereType.toLowerCase().equals("standard")){
             greyScale = new Color[h][w];
@@ -46,8 +54,6 @@ class Sphere {
                     greyScale[i][j] = new Color(this.binConvert(greyVal),this.binConvert(greyVal),this.binConvert(greyVal));
                     altitude[i][j] =  greyScale[i][j].getR();
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
-                    tempMap[i][j] = random(-10,35);
-                    rainMap[i][j] = random(0,450);
                 }
             }
         }        
@@ -131,8 +137,6 @@ class Sphere {
                     // storing the coords into array of vectors
                     globe[i][j] = new Vector3D(x, y, z);
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
-                    tempMap[i][j] = random(-10,35);
-                    rainMap[i][j] = random(0,450);
                 }
             }
         }        

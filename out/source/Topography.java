@@ -150,6 +150,38 @@ public static final String GREYSCALE_IMAGE = "marsTopography.jpeg";
 public static final int PHOTO_DETAIL = 200; // 5 < x < 1024 (image width)
 public static final double RAYLEIGH_STRENGTH = 0.01f; // 0.005 < x < 0.1
 }
+/*
+
+Hey Mr.Farrar,
+Other than my feature list, I have the following in this proj
+
+FEATURE LIST:
+different sphere visualization types
+using rayleigh scattering to correctly predict what the water would look like (actually hard)
+detail level
+wrapping
+my own vector classes
+drawing biomes randomly
+binary conversion
+taking in any greyscale image (works with any)
+water rises and falls
+altitude scalar
+controller
+
+
+FEATURES (glitches) IM AWARE OF:
+when scaling altitude, some quads change color before they r underwater (bc one vertex is underwater and it changes the whole quad)
+sphereType doesnt do anything
+
+
+IMPORTANT:
+to test if random biomes work, Uncomment lines 
+FinalProject.pde{
+37,38
+266,267
+291,292
+}
+*/
 
 PeasyCam cam;
 Vector3D[][] globe;
@@ -186,6 +218,7 @@ public void setup() {
     aspectRatio =  1 / ((double)(originalTopography.width)/(double)(originalTopography.height));
     sphere = new Sphere(radius,globe);
     sphere.startSphere(currentShape);
+    //sphere.getBiomes();
     //sphere.calculateBiomes();
     ico.createMesh();
     for(int i = 0; i < 6; i++){
@@ -218,8 +251,6 @@ public void draw() {
         text("FEATURES", width/2,525);
         text("QUIT", width/2,625);
         rectMode(CENTER);
-        // println("x: " + mouseX);
-        // println("y: " + mouseY);
         if(mouseX > width/2 -55 && mouseX < width/2 + 55 && mouseY > 300 && mouseY < 325){
             if(mousePressed){
                 state = STATE.GAME;
@@ -416,6 +447,8 @@ public void draw() {
                 sphere.w = (int) ((1.02f*sphere.w) + 1);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
+                // sphere.getBiomes();
+                // sphere.calculateBiomes();
             }
             if(sphereMode == 1 && cubeFaces[1].resolution < 31){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -439,6 +472,8 @@ public void draw() {
                 sphere.w =(int) (.98f*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
+                // sphere.getBiomes();
+                // sphere.calculateBiomes();
             }
             if(sphereMode == 1 && cubeFaces[1].resolution > 2){
                 for(int i = 0; i < cubeFaces.length;i++){
@@ -662,6 +697,14 @@ class Sphere {
         this.r = r;
         this.globe = globe;
     }
+    public void getBiomes(){
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                tempMap[i][j] = random(-10,35);
+                rainMap[i][j] = random(0,450);
+            }
+        }
+    }
     public void startSphere(String sphereType) {
         if(sphereType.toLowerCase().equals("standard")){
             greyScale = new Color[h][w];
@@ -694,8 +737,6 @@ class Sphere {
                     greyScale[i][j] = new Color(this.binConvert(greyVal),this.binConvert(greyVal),this.binConvert(greyVal));
                     altitude[i][j] =  greyScale[i][j].getR();
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
-                    tempMap[i][j] = random(-10,35);
-                    rainMap[i][j] = random(0,450);
                 }
             }
         }        
@@ -779,8 +820,6 @@ class Sphere {
                     // storing the coords into array of vectors
                     globe[i][j] = new Vector3D(x, y, z);
                     globe[i][j] = globe[i][j].scale((r + (altitude[i][j] * altScalar)) / r);
-                    tempMap[i][j] = random(-10,35);
-                    rainMap[i][j] = random(0,450);
                 }
             }
         }        
