@@ -1,8 +1,7 @@
 /* 
 FINAL CHANGES:
-add a simple gui w description {
-    maybe add a feature list
-}
+add a menu to the game screen
+
 how the hell do i map the temps of mars? (no way im doing it manually). Maybe the same way im gonna do biomes? (with triangle mapping?)
 maybe try mapping the stuff on the cube & ico (too hard for time constraint?)
 maybe make enum for spheremode since nobody knows what it means (spheremode.ico)
@@ -22,7 +21,6 @@ gulfstreams and grasslands and beaches
 adding something to auto detect range of colors from low to high (so i dont have to use grayscale)
 CLIMATE:
 https://www.jstor.org/stable/24975952?seq=5 go page 5 for graph of temps on mars
-
 
 
 

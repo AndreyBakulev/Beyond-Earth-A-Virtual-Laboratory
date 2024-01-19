@@ -4,6 +4,14 @@ Vector3D[][] globe;
 PImage originalTopography;
 int w,h;
 Sphere sphere;
+enum STATE{
+    GAME,
+    MENU,
+    FEATURES,
+    INSTRUCTIONS
+};
+STATE state;
+double aspectRatio;
 int photoDetail = Controller.PHOTO_DETAIL;
 String photo = Controller.GREYSCALE_IMAGE;
 int waterLevel = Controller.WATER_LEVEL;
@@ -12,7 +20,6 @@ int detail = Controller.DETAIL;
 int radius = Controller.RADIUS;
 int sphereMode = Controller.SPHERE_MODE;
 int icoRecursive = Controller.ICO_RECURSIVE;
-double aspectRatio;
 NormalizedCube[] cubeFaces = new NormalizedCube[6];
 SpherifiedCube[] sCubeFaces = new SpherifiedCube[6];
 Icosahedron ico = new Icosahedron(icoRecursive,radius);
@@ -20,6 +27,7 @@ Vector3D[] direction = {new Vector3D(0,-1,0), new Vector3D(0,1,0),new Vector3D(1
 String currentShape = "standard";
 void setup() {
     size(1280,720,P3D);
+    state  = STATE.MENU;
     cam = new PeasyCam(this,500);
     originalTopography = loadImage(photo);
     originalTopography.loadPixels();
@@ -42,6 +50,91 @@ void draw() {
     lights();
     noStroke();
     textAlign(CENTER);
+    if(state == STATE.MENU){
+        cam.beginHUD();
+        fill(0,408,612);
+        textSize(60);
+        textMode(CENTER);
+        text("Beyond Earth:",width/2,115);
+        text("A Virtual Laboratory",width/2,175);
+        textSize(20);
+        text("By Andrey Bakulev", width/2,210);
+        textSize(40);
+        fill(255);
+        text("START", width/2,325);
+        text("TUTORIAL", width/2,425);
+        text("FEATURES", width/2,525);
+        text("QUIT", width/2,625);
+        rectMode(CENTER);
+        // println("x: " + mouseX);
+        // println("y: " + mouseY);
+        if(mouseX > width/2 -55 && mouseX < width/2 + 55 && mouseY > 300 && mouseY < 325){
+            if(mousePressed){
+                state = STATE.GAME;
+            }
+        }
+        if(mouseX > width/2 - 85 && mouseX < width/2 + 85 && mouseY > 400 && mouseY <  425){
+            if(mousePressed){
+                state = STATE.INSTRUCTIONS;
+            }
+        }
+        if(mouseX > width/2 - 85 && mouseX < width/2 + 85 && mouseY > 500 && mouseY <  525){
+            if(mousePressed){
+                state = STATE.FEATURES;
+            }
+        }
+        if(mouseX > width/2 - 45 && mouseX < width/2 + 45 && mouseY > 600 && mouseY < 625){
+            if(mousePressed){
+                exit();
+            }
+        }
+        cam.endHUD();
+    }
+    if(state == STATE.INSTRUCTIONS){
+        cam.beginHUD();
+        fill(0,408,612);
+        textSize(60);
+        textMode(CENTER);
+        text("How To Use:",width/2,115);
+        textSize(30);
+        fill(255);
+        text("To scale planet altitude, use UP and DOWN arrow keys",width/2,175);
+        text("To change water level of planet, use LEFT and RIGHT arrow keys",width/2,250);
+        text("To change detail level, use Q and E",width/2,325);
+        text("Use keys 1-4 to see different ways to render a sphere (WIP)",width/2,400);
+        textSize(40);
+        text("BACK", width/2,660);
+        rectMode(CENTER);
+        if(mouseX > 610 && mouseX < 695 && mouseY > 630 && mouseY < 660){
+            if(mousePressed){
+                state = STATE.MENU;
+            }
+        }
+        cam.endHUD();
+    }
+    if(state == STATE.FEATURES){
+        cam.beginHUD();
+        fill(0,408,612);
+        textSize(60);
+        textMode(CENTER);
+        text("Features:",width/2,115);
+        textSize(30);
+        fill(255);
+        text("Planetary Altitude Scaling",width/2,175);
+        text("Accurate Water level measuring",width/2,250);
+        text("Detail level of planet",width/2,325);
+        text("Different methods of creating a sphere (WIP)",width/2,400);
+        textSize(40);
+        text("BACK", width/2,660);
+        rectMode(CENTER);
+        if(mouseX > 610 && mouseX < 695 && mouseY > 630 && mouseY < 660){
+            if(mousePressed){
+                state = STATE.MENU;
+            }
+        }
+        cam.endHUD();
+    }
+    if(state == STATE.GAME){
     switch(sphereMode){
         case 0: 
             sphere.drawSphere();
@@ -167,8 +260,8 @@ void draw() {
                 }
         }
         if(key == 'e'){
-            if(sphereMode == 0 && sphere.w < originalTopography.width){
-                sphere.w = (int) (1.02*sphere.w);
+            if(sphereMode == 0 && sphere.w < originalTopography.width-1){
+                sphere.w = (int) ((1.02*sphere.w) + 1);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
             }
@@ -190,7 +283,7 @@ void draw() {
             }
         }
         if(key == 'q'){
-            if(sphereMode == 0 && sphere.w > 1){
+            if(sphereMode == 0 && sphere.w > 5){
                 sphere.w =(int) (.98*sphere.w);
                 sphere.h = (int) (sphere.w * aspectRatio);
                 sphere.startSphere("standard");
@@ -225,4 +318,5 @@ void draw() {
     fill(0,408,612);
     text("Planet: " + planetName.substring(0,1).toUpperCase() + planetName.substring(1),0, - 225);
     text("Sphere Type: " + currentShape,0, -150);
+}
 }
