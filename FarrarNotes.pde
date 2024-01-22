@@ -29,4 +29,5 @@ FinalProject.pde{
 266,267
 291,292
 }
+if you want to test diff maps, change the name in controller.pde
 */
