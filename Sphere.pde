@@ -15,6 +15,7 @@ class Sphere {
         this.globe = globe;
     }
     void getBiomes(){
+        //this is just randomized bc I haven't figured out how to actually make biomes yet :D
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 tempMap[i][j] = random(-10,35);
