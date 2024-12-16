@@ -29,7 +29,7 @@ void setup() {
     size(1280,720,P3D);
     state  = STATE.MENU;
     cam = new PeasyCam(this,500);
-    originalTopography = loadImage(photo);
+    originalTopography = loadImage("./TopographyMaps/"+photo);
     originalTopography.loadPixels();
     aspectRatio =  1 / ((double)(originalTopography.width)/(double)(originalTopography.height));
     sphere = new Sphere(radius,globe);
